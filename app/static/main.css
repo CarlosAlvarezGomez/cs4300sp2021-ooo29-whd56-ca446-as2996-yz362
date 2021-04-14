@@ -11,6 +11,8 @@ text-align:center;
 body {
 padding-top: 15%;
 padding-bottom: 15px;
+background-color: rgb(102, 64, 14);
+font-family: 'Roboto', sans-serif;
 }
 .global-search {
 text-align:center;
@@ -25,14 +27,14 @@ margin-bottom:0;
 }
 }
 .topcorner{
-position:absolute;
+/* position:absolute; */
 top:2%;
 right:2%;
 }
 .btn{
-background-color: #4285F4;
+background-color: #3d6e15;
 border: none
 }
 .step-links a{
-color: #4285F4;
+color: #3d6e15;
 }
