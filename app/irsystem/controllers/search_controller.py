@@ -35,14 +35,15 @@ def search():
 		output_message = "Please input ingredients or a description to find ecologically friendly recipes!"
 	else:
 		# calculate ecological ranking
-		ecoDF = INGREDIENTS_SIM(ingredients,allergies,dietReq)
-		# ecoRankedList = list(ecoDF['recipe_id'])
+		ecoDF = ECO_SIMILARITIES(ingredients,allergies,dietReq)
+		ecoRankedList = list(ecoDF['id'])
 		ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
 		# calculate description ranking
-		descripDF = get_cosine_similarities(description)
-		#descripRankedList = list(descripDF['recipe_id'])
-		descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
+		descripList = get_cosine_similarities(description)
+		# descripRankedList = list(descripDF['recipe_id'])
+		# descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
+		descripRank = descripList.keys()
 
 		# set weights
 		ecoW = 0.5
@@ -59,7 +60,8 @@ def search():
 				if recipes[recipe,'minutes'] <= maxTime and recipes[recipe,'emission'] <= maxFootprint
 					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripRank[recipe]
 
-		data = sorted{finalRank, key = lambda k:finalRank[k]}[:20]
+		data = sorted{finalRank, key = lambda k:finalRank[k]}[:100]
+		data = INGREDIENTS_SIM(data,ingredients)
 
 
 	return render_template('result.html', name=project_name, netid=net_id, output_message=output_message, data=data)
