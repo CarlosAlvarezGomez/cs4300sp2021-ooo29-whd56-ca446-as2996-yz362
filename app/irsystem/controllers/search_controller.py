@@ -2,8 +2,10 @@ from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
-# import pandas
+# import
 import pandas as pd
+# IMPORT INGREDIENTS FUNCTION
+# IMPORT SIMILARITY FUNCTION
 
 project_name = "Ilan's Cool Project Template"
 net_id = "Ilan Filonenko: if56"
@@ -11,10 +13,15 @@ net_id = "Ilan Filonenko: if56"
 # read recipe database
 # we will want to have a data structure that stores the eco footprint of each recipe, I assume it's in the recipes df for now
 recipes = pd.read_csv('../../../../Dataset/files/sampled_recipes.csv',index_col='id')
-recipe_ids = list(recipes.index())
+global recipe_ids = list(recipes.index())
 
+@irsystem.route('/')
+def main():
+	output_message = ''
+	data = []
+	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
-@irsystem.route('/', methods=['GET'])
+@irsystem.route('/search', methods=['GET'])
 def search():
 	ingredients = request.args.get('ingredients') # get list of ingredients
 	maxFootprint = request.args.get('ecoSlide') # get max footprint
@@ -55,4 +62,4 @@ def search():
 		data = sorted{finalRank, key = lambda k:finalRank[k]}[:20]
 
 
-	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
+	return render_template('result.html', name=project_name, netid=net_id, output_message=output_message, data=data)
