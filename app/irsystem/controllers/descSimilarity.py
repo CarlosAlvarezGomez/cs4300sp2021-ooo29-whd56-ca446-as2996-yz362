@@ -10,9 +10,9 @@ from collections import Counter
 import time
 
 # Paths
-PATH_TO_RECIPES = 'files/sampled_recipes.csv'
-PATH_TO_INVERTED_INDEX = 'files/inverted_index.csv'
-PATH_TO_DOC_NORMS = 'files/doc_norms.csv'
+PATH_TO_RECIPES = '../../../Dataset/files/sampled_recipes.csv'
+PATH_TO_INVERTED_INDEX = '../../../Dataset/files/inverted_index.csv'
+PATH_TO_DOC_NORMS = '../../../Dataset/files/doc_norms.csv'
 
 # Number of docs
 N_DOCS = 61955
@@ -20,10 +20,13 @@ N_DOCS = 61955
 # Imports the recipe data
 doc_dataframe = pd.read_csv(PATH_TO_RECIPES)
 
+# Converts a string into a list of tokens
 def tokenize_string(string):
   return string.lower().replace('.', '').replace(',', '').split(' ')
 
-def filter_inverted_index(inverted_index_input, min_df=0.0, max_df=1, n_docs=N_DOCS):
+# Filters an inverted index using the so that it only keeps terms that are
+# in the desired range
+def filter_inverted_index(inverted_index_input, min_df=0.1, max_df=.9, n_docs=N_DOCS):
   new_inverted_index = {}
   minimum = min_df * n_docs
   maximum = max_df * n_docs
@@ -35,6 +38,7 @@ def filter_inverted_index(inverted_index_input, min_df=0.0, max_df=1, n_docs=N_D
   
   return new_inverted_index
 
+# Uses the recipes dataframe to make an inverted index
 def make_inverted_index(recipes_df):
   recipe_ids = []
   recipe_desc = []
@@ -58,6 +62,7 @@ def make_inverted_index(recipes_df):
 
   return filter_inverted_index(inverted_index)
 
+# Saves the inverted index given into a csv file at the given path
 def save_inverted_index(inverted_index_input, path_to_inverted_index=PATH_TO_INVERTED_INDEX):
   rows = []
   for term, tfs in inverted_index_input.items():
@@ -70,6 +75,7 @@ def save_inverted_index(inverted_index_input, path_to_inverted_index=PATH_TO_INV
   inverted_index_df = pd.DataFrame(rows, columns = ['term', 'term-frequencies'])
   inverted_index_df.to_csv(path_to_inverted_index)
 
+# Gets an inverted index from the given path
 def get_inverted_index(path_to_inverted_index=PATH_TO_INVERTED_INDEX):
   inverted_index_df = pd.read_csv(path_to_inverted_index)
   inverted_indx = {}
@@ -87,6 +93,10 @@ def get_inverted_index(path_to_inverted_index=PATH_TO_INVERTED_INDEX):
 
   return inverted_index
   
+# Creates the inverted index used in the next functions
+inverted_index = make_inverted_index(doc_dataframe)
+
+# Uses an inverted index to make a dictionary containing the doc norms
 def make_doc_norms(inverted_index_input, n_docs=N_DOCS):
   doc_norms = {}
 
@@ -105,10 +115,12 @@ def make_doc_norms(inverted_index_input, n_docs=N_DOCS):
 
   return doc_norms
 
+# Save the doc norms as a csv file at the given path
 def save_doc_norms(doc_norms, path_to_doc_norms=PATH_TO_DOC_NORMS):
   df = pd.DataFrame(list(doc_norms.items()), columns=['id', 'norm'])
   df.to_csv(path_to_doc_norms)
 
+# Gets the doc norms from a csv file at the given path
 def get_doc_norms(path_to_doc_norms=PATH_TO_DOC_NORMS):
   doc_norms_df = pd.read_csv(path_to_doc_norms)
 
@@ -122,10 +134,11 @@ def get_doc_norms(path_to_doc_norms=PATH_TO_DOC_NORMS):
 
   return doc_norms
 
-def get_cosine_similarities(query, recipes_df=doc_dataframe,n_docs=N_DOCS):
+# Calculates the cosine similiarities between the query and all the docs in
+# recipe descriptions given
+def get_cosine_similarities(query, inverted_index=inverted_index, n_docs=N_DOCS):
   
-  inverted_index = make_inverted_index(recipes_df)
-  doc_norms = get_doc_norms()
+  doc_norms = get_doc_norms(PATH_TO_DOC_NORMS)
 
   scores = {}
   q_norm = 0
@@ -149,17 +162,7 @@ def get_cosine_similarities(query, recipes_df=doc_dataframe,n_docs=N_DOCS):
       scores[doc_id] = scores[doc_id] / (q_norm * doc_norm)
     else:
       scores[doc_id] = 0
+
+  scores = {key:val for key, val in sorted(scores.items(), key=lambda x : x[1], reverse=True)}
   
   return scores
-
-diffs = []
-for i in range(5):
-  t = time.time()
-  a= get_cosine_similarities('sweet and sour')
-  diff = time.time() - t
-  diffs.append(diff)
-
-print(sum(diffs)/len(diffs))
-b = list(a.items())
-b.sort(key = lambda x : x[1], reverse=True)
-print(b[:10])
