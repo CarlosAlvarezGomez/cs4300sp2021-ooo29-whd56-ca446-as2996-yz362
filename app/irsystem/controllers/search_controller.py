@@ -16,12 +16,12 @@ recipe_ids = list(recipes.index())
 
 @irsystem.route('/', methods=['GET'])
 def search():
-	ingredients = request.args.get('PLACE HOLDER') # get list of ingredients
-	maxFootprint = request.args.get('PLACE HOLDER') # get max footprint
-	maxTime = request.args.get('PLACE HOLDER') # get time limits
-	allergies = request.args.get('PLACE HOLDER') # get list of allergies
-	dietReq = request.args.get('PLACE HOLDER') # get diet requirements
-	description = request.args.get('PLACE HOLDER') # get description
+	ingredients = request.args.get('ingredients') # get list of ingredients
+	maxFootprint = request.args.get('ecoSlide') # get max footprint
+	maxTime = request.args.get('timeSlide') # get time limits
+	allergies = request.args.get('') # get list of allergies
+	dietReq = [request.args.get('vegan'), request.args.get('vegetarian'), request.args.get('pescatarian')]    # get diet requirements
+	description = request.args.get('recipe-description') # get description
 
 	if (not ingredients) and (not description):
 		data = []
@@ -33,7 +33,7 @@ def search():
 		ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
 		# calculate description ranking
-		descripDF = DESCRIPTION_SIM(description)
+		descripDF = get_cosine_similarities(description)
 		#descripRankedList = list(descripDF['recipe_id'])
 		descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
 
