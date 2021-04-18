@@ -4,6 +4,7 @@ from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 # import
 import pandas as pd
+import os
 # IMPORT INGREDIENTS FUNCTION
 # IMPORT SIMILARITY FUNCTION
 
@@ -12,8 +13,13 @@ net_id = "Ilan Filonenko: if56"
 
 # read recipe database
 # we will want to have a data structure that stores the eco footprint of each recipe, I assume it's in the recipes df for now
-recipes = pd.read_csv('../../../../Dataset/files/sampled_recipes.csv',index_col='id')
+cwd = os.getcwd()
+os.chdir("..")
+os.chdir("..")
+os.chdir("..")
+recipes = pd.read_csv('Dataset/files/sampled_recipes.csv',index_col='id')
 global recipe_ids = list(recipes.index())
+os.chdir(mycwd)
 
 @irsystem.route('/')
 def main():
