@@ -20,7 +20,7 @@
     </form>
 
     <!-- TITLE -->
-    <form class="form-inline global-search">
+    <form class="form-inline global-search" method="GET">
         <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
             <!-- <span style="color: #EA4335; ">S</span>
@@ -48,14 +48,6 @@
         <div class="form-group">
             <input id="recipe-description" type="text" name="search" class="form-control"
                 placeholder="Easy, simple autumnal dish">
-    <head>
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        <div class="topcorner">
-            <p>Project Name: Sustainable Sustenance</p>
-            <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
         </div>
         <br><br>
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
@@ -92,19 +84,19 @@
         </h1>
         <br><br>
         <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegan
-            <input type="checkbox" checked="checked">
+            <input id="vegan" type="checkbox" checked="checked">
             <span class="checkmark"></span>
         </label>
         <br><br>
 
         <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegetarian
-            <input type="checkbox">
+            <input id="vegetarian" type="checkbox">
             <span class="checkmark"></span>
         </label>
         <br><br>
 
         <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Pescatarian
-            <input type="checkbox">
+            <input id="pescatarian" type="checkbox">
             <span class="checkmark"></span>
         </label>
         <br><br>
