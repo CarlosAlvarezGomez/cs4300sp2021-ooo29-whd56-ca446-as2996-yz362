@@ -1,39 +1,122 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        <div class="topcorner">
-            <p>Project Name: Sustainable Sustenance</p>
-            <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
+
+<head>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/sliders.css">
+    <link rel="stylesheet" href="/static/checkbox.css">
+
+    <script src="/dynamic/sliders.js"></script>
+</head>
+
+<body style="background-color:darkgray; font-family: 'Roboto', sans-serif;">
+    <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small;">
+        <p>Project Name: Sustainable Sustenence</p>
+        <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
+    </div>
+
+    <form>
+        <button formaction="/static/explain.html">System description here!</button>
+    </form>
+
+    <!-- TITLE -->
+    <form class="form-inline global-search" method="GET">
+        <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
+            SUSTAINABLE SUSTENANCE
+            <!-- <span style="color: #EA4335; ">S</span>
+            <span style="color: #FBBC05; ">4</span>
+
+            <span style="color: #34A853; ">0</span>
+            <span style="color: #EA4335; ">0</span> -->
+        </h1>
+
+        <br><br>
+        <!-- TEXTBOXES -->
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            Ingredients you'd like to use:
+        </h1>
+        <br><br>
+        <div class="form-group">
+            <input id="ingredients" type="text" name="search" class="form-control"
+                placeholder="Eggs, Bacon, Butter, ...">
         </div>
-        <form class="form-inline global-search">
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                C
-                <span style="color: #EA4335; ">S</span>
-                <span style="color: #FBBC05; ">4</span>
-                3
-                <span style="color: #34A853; ">0</span>
-                <span style="color: #EA4335; ">0</span>
-            </h1>
-            
-            <br><br>
-            
-            <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
-            </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
-        </form>
-        <form class="form-inline global-search">
+        <br><br>
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            What are you in the mood for?
+        </h1>
+        <br><br>
+        <div class="form-group">
+            <input id="recipe-description" type="text" name="search" class="form-control"
+                placeholder="Easy, simple autumnal dish">
+        </div>
+        <br><br>
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            Any allergies?
+        </h1>
+        <br><br>
+        <div class="form-group">
+            <input id="allergies" type="text" name="search" class="form-control"
+                placeholder="Peanuts, gluten, cashews, ...">
+        </div>
+        <br><br>
+
+        <!-- SLIDERS -->
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            How much time do you want to spend cooking?
+        </h1>
+        <br><br>
+        <div class="slidecontainer">
+            <input id="timeSlide" type="range" min="1" max="10" value="5" class="slider">
+        </div>
+        <br><br>
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            Ecological factor?
+        </h1>
+        <br><br>
+        <div class="slidecontainer">
+            <input id="ecoSlide" type="range" min="1" max="10" value="5" class="slider">
+        </div>
+        <br><br>
+
+        <!-- CHECKBOXES -->
+        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+            Any dietary requirements?
+        </h1>
+        <br><br>
+        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegan
+            <input id="vegan" name= "diet_req" value="vegan" type="checkbox" checked="checked">
+            <span class="checkmark"></span>
+        </label>
+        <br><br>
+
+        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegetarian
+            <input id="vegetarian" name= "diet_req" value="vegetarian" type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <br><br>
+
+        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Pescatarian
+            <input id="pescatarian" name= "diet_req" value="pescatarian" type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <br><br>
+
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="btn btn-info"> Find me recipes! </button>
+
+    </form>
+
+    <br><br>
+    <form class="form-inline global-search">
         {% if data %}
-            <h1>{{output_message}}</h1>
-            {% for d in data %}  
-                <br>
-                <p>{{d}}</p>
-            {% endfor %}
+        <h1>{{output_message}}</h1>
+        {% for d in data %}
+        <br>
+        <p>{{d}}</p>
+        {% endfor %}
         {% endif %}
-        </form>
-    </body>
+    </form>
+</body>
 
 </html>
