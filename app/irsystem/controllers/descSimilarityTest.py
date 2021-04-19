@@ -1,10 +1,18 @@
-from descSimilarity import get_cosine_similarities
+from descSimilarity import get_cosine_similarities, make_inverted_index
 import time
+import pandas as pd
+
+t = time.time()
+
+inverted_index = make_inverted_index(pd.read_csv('../../../Dataset/files/sampled_recipes.csv'))
+diff = time.time() - t
+print(diff)
+
+t = time.time()
 
 diffs = []
-for i in range(20):
-  t = time.time()
-  a= get_cosine_similarities('sweet sour tasty')
+for i in range(1):
+  a= get_cosine_similarities('sweet sour tasty', inverted_index=inverted_index)
   diff = time.time() - t
   diffs.append(diff)
 

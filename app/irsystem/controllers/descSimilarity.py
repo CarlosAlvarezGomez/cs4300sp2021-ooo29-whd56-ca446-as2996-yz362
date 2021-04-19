@@ -94,7 +94,7 @@ def get_inverted_index(path_to_inverted_index=PATH_TO_INVERTED_INDEX):
   return inverted_index
   
 # Creates the inverted index used in the next functions
-inverted_index = make_inverted_index(doc_dataframe)
+# inverted_index = make_inverted_index(doc_dataframe)
 
 # Uses an inverted index to make a dictionary containing the doc norms
 def make_doc_norms(inverted_index_input, n_docs=N_DOCS):
@@ -136,7 +136,7 @@ def get_doc_norms(path_to_doc_norms=PATH_TO_DOC_NORMS):
 
 # Calculates the cosine similiarities between the query and all the docs in
 # recipe descriptions given
-def get_cosine_similarities(query, inverted_index=inverted_index, n_docs=N_DOCS):
+def get_cosine_similarities(query, inverted_index, n_docs=N_DOCS):
   
   doc_norms = get_doc_norms(PATH_TO_DOC_NORMS)
 
