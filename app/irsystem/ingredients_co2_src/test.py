@@ -94,7 +94,6 @@ def test_food_filter():
         idx = t[2]
         expected = t[3]
         df = ingr.filter_foods(t[1], df, 2)
-        print(df)
         test_eq(name, df.loc[idx]["id"], expected)
 
 def test_all():
@@ -104,6 +103,5 @@ def test_all():
     test_meat_aliases()
     test_food_co2()
     test_food_filter()
-    print("All tests pass!")
 
 test_all()

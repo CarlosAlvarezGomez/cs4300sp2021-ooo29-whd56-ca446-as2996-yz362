@@ -63,7 +63,6 @@ def make_review_id_histogram(is_user):
     ids = rev_df[category]
 
     num_bins = ids.nunique()
-    print("There are", num_bins, "different {}s!".format(word))
     if is_user:
         ids = ids[ids < 999999]
         num_bins = ids.nunique()

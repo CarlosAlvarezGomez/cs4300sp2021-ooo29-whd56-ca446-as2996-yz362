@@ -86,7 +86,6 @@ def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
         Whether recipe's ingredients contains a token within max_dist of
         the inputted ingredient.
     """
-    print(recipe_series)
     ingredients = recipe_series[ING_CATEGORY_NAME]
     return list_contains_ingredient(ingredients, ingredient_query, max_dist)
     

@@ -6,7 +6,6 @@ t = time.time()
 
 inverted_index = make_inverted_index(pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv'))
 diff = time.time() - t
-print(diff)
 
 t = time.time()
 
@@ -16,7 +15,5 @@ for i in range(1):
   diff = time.time() - t
   diffs.append(diff)
 
-print(sum(diffs)/len(diffs))
 b = list(a.items())
 b.sort(key = lambda x : x[1], reverse=True)
-print(b[:10])

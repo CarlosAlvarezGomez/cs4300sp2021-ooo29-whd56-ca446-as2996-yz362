@@ -54,8 +54,8 @@ def search():
 		descripList = SIM.get_cosine_similarities(description, inverted_index)
 		# descripRankedList = list(descripDF['recipe_id'])
 		# descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
-		descripRank = descripList.keys()
-
+		descripKeys = descripList.keys()
+		descripRank = {id:rank for rank,id in enumerate(descripKeys)}
 		# set weights
 		ecoW = 0.5
 		descripW = 1-ecoW
@@ -65,13 +65,11 @@ def search():
 
 		for recipe in recipe_ids:
 			# just in case we didn't return all recipe ids, check if we have both scores first
-			if recipe in ecoRank.keys() and recipe in descripRank:
+			if recipe in ecoRank.keys() and recipe in descripRank.keys():
 
 				# if the recipe meets time and eco requirements
 				if float(recipes.loc[recipe, 'minutes']) <= float(maxTime): #and float(recipes.loc[recipe,'emission']) <= maxFootprint:
-					print(ecoRank[recipe])
-					print(descripList[recipe])
-					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripList[recipe]
+					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripRank[recipe]
 
 		data = sorted(finalRank, key = lambda k:finalRank[k])[:100]
 		data = IG.first_n_filtered(data,allergies,dietReq,20)
