@@ -2,7 +2,7 @@ import ingredients as ingr
 import co2_handling as co2
 import pandas as pd
 
-DATASET_DIR = "../../../Dataset/files/"
+DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 
 def test_eq(name, output, expected):

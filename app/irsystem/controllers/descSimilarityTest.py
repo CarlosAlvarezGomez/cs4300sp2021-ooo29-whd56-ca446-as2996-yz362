@@ -4,7 +4,7 @@ import pandas as pd
 
 t = time.time()
 
-inverted_index = make_inverted_index(pd.read_csv('../../../Dataset/files/sampled_recipes.csv'))
+inverted_index = make_inverted_index(pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv'))
 diff = time.time() - t
 print(diff)
 
