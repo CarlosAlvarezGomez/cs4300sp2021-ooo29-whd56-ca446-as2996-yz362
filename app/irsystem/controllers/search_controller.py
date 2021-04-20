@@ -1,13 +1,15 @@
 from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+from flask import Response
 
 # import
 import json
 import pandas as pd
 import os
-import descSimilarity as SIM# IMPORT SIMILARITY FUNCTION
-import ingredients as IG # IMPORT INGREDIENTS FUNCTION
+import ast
+from . import descSimilarity as SIM # IMPORT SIMILARITY FUNCTION
+from . import ingredients as IG # IMPORT INGREDIENTS FUNCTION
 
 
 project_name = "Ilan's Cool Project Template"
@@ -15,14 +17,14 @@ net_id = "Ilan Filonenko: if56"
 
 # read recipe database
 # we will want to have a data structure that stores the eco footprint of each recipe, I assume it's in the recipes df for now
-global inverted_index = SIM.make_inverted_index(pd.read_csv('../../../Dataset/files/sampled_recipes.csv'))
-cwd = os.getcwd()
-os.chdir("..")
-os.chdir("..")
-os.chdir("..")
-global recipes = pd.read_csv('Dataset/files/sampled_recipes.csv',index_col='id')
-global recipe_ids = list(recipes.index())
-os.chdir(mycwd)
+global inverted_index
+
+global recipes
+
+recipes = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv',index_col='id')
+inverted_index = SIM.make_inverted_index(recipes)
+global recipe_ids
+recipe_ids = list(recipes.index)
 
 @irsystem.route('/')
 def main():
@@ -38,7 +40,7 @@ def search():
 	allergies = request.args.get('allergies') # get list of allergies
 	dietReq = request.args.getlist('diet_req')    # get diet requirements
 	description = request.args.get('recipe-description') # get description
-
+	data = []
 	if (not description):
 		output = {}
 		#output_message = "Please input ingredients or a description to find ecologically friendly recipes!"
@@ -49,7 +51,7 @@ def search():
 		ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
 		# calculate description ranking
-		descripList = get_cosine_similarities(description, inverted_index)
+		descripList = SIM.get_cosine_similarities(description, inverted_index)
 		# descripRankedList = list(descripDF['recipe_id'])
 		# descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
 		descripRank = descripList.keys()
@@ -63,23 +65,23 @@ def search():
 
 		for recipe in recipe_ids:
 			# just in case we didn't return all recipe ids, check if we have both scores first
-			if recipe in ecoRank.keys() and recipe in descripRank.keys():
+			if recipe in ecoRank.keys() and recipe in descripRank:
 
 				# if the recipe meets time and eco requirements
-				if recipes[recipe,'minutes'] <= maxTime and recipes[recipe,'emission'] <= maxFootprint
-					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripRank[recipe]
+				if float(recipes.loc[recipe, 'minutes']) <= float(maxTime): #and float(recipes.loc[recipe,'emission']) <= maxFootprint:
+					print(ecoRank[recipe])
+					print(descripList[recipe])
+					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripList[recipe]
 
-		data = sorted{finalRank, key = lambda k:finalRank[k]}[:100]
+		data = sorted(finalRank, key = lambda k:finalRank[k])[:100]
 		data = IG.first_n_filtered(data,allergies,dietReq,20)
 
 	output = {}
 
 	for id in data:
-		output{id} = {
-		"ingredients": recipes[id,'ingredients'],
-		"description":recipes[id,'description'],
-		"steps":recipes[id,'steps']
+		output[id] = {
+		"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+		"description":recipes.loc[id,'description']
+		# "steps":recipes.loc[id,'steps']
 		} # THIS WILL NEED TO TAKE IN ML COMPONENT RESULTS AND MAYBE FOORPRINT INFO?
-
-	# return render_template('result.html', name=project_name, netid=net_id, output_message=output_message, data=data)
-	return json.dumps(output)
+	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
