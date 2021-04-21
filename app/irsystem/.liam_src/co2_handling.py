@@ -1,7 +1,7 @@
 import pandas as pd
 import ingredients as ingr
 from time import time
-DATASET_DIR = "../../../Dataset/files/"
+DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 FOOTPRINT_FILE = "{}Footprint.csv".format(DATASET_DIR)
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 RECIPE_CO2_FILENAME = "recipes_co2_sorted.csv"
@@ -57,9 +57,6 @@ def make_co2_recipes_csv(df):
 
     apply_calc_co2 = lambda x: calc_ingredients_co2_score_dict(co2_dic, x)
     df["CO2"] = df["ingredients"].apply(apply_calc_co2)
-
-    print(df["CO2"])
-    print("TIME:", time() - t1, " seconds")
 
     df = df.sort_values(by="CO2", ascending=True)
     df.to_csv(RECIPE_CO2_FILENAME, 

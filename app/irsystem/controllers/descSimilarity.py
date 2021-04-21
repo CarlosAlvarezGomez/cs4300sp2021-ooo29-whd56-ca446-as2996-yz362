@@ -10,15 +10,15 @@ from collections import Counter
 import time
 
 # Paths
-PATH_TO_RECIPES = '../../../Dataset/files/sampled_recipes.csv'
-PATH_TO_INVERTED_INDEX = '../../../Dataset/files/inverted_index.csv'
-PATH_TO_DOC_NORMS = '../../../Dataset/files/doc_norms.csv'
+PATH_TO_RECIPES = 'app/irsystem/controllers/Dataset/files/sampled_recipes.csv'
+PATH_TO_INVERTED_INDEX = 'app/irsystem/controllers/Dataset/files/inverted_index.csv'
+PATH_TO_DOC_NORMS = 'app/irsystem/controllers/Dataset/files/doc_norms.csv'
 
 # Number of docs
 N_DOCS = 61955
 
 # Imports the recipe data
-doc_dataframe = pd.read_csv(PATH_TO_RECIPES)
+# doc_dataframe = pd.read_csv(PATH_TO_RECIPES)
 
 # Converts a string into a list of tokens
 def tokenize_string(string):
@@ -40,13 +40,13 @@ def filter_inverted_index(inverted_index_input, min_df=0.1, max_df=.9, n_docs=N_
 
 # Uses the recipes dataframe to make an inverted index
 def make_inverted_index(recipes_df):
-  recipe_ids = []
-  recipe_desc = []
+  recipe_ids = list(recipes_df.index)
+  recipe_desc = list(recipes_df['description'])
   inverted_index = {}
   
-  for _, row in recipes_df.iterrows():
-    recipe_ids.append(row['id'])
-    recipe_desc.append(row['description'])
+  # for _, row in recipes_df.iterrows():
+  #   recipe_ids.append(row['recipe_id'])
+  #   recipe_desc.append(row['description'])
 
   # The following for-loop is mostly taken from the build-inverted-index
   # function in assignment 4

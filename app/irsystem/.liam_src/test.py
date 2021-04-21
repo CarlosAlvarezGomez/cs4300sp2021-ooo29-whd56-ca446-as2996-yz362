@@ -2,7 +2,7 @@ import ingredients as ingr
 import co2_handling as co2
 import pandas as pd
 
-DATASET_DIR = "../../../Dataset/files/"
+DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 
 def test_eq(name, output, expected):
@@ -94,7 +94,6 @@ def test_food_filter():
         idx = t[2]
         expected = t[3]
         df = ingr.filter_foods(t[1], df, 2)
-        print(df)
         test_eq(name, df.loc[idx]["id"], expected)
 
 def test_all():
@@ -104,6 +103,5 @@ def test_all():
     test_meat_aliases()
     test_food_co2()
     test_food_filter()
-    print("All tests pass!")
 
 test_all()

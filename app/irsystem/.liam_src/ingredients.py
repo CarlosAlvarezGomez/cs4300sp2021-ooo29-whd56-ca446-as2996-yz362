@@ -9,7 +9,7 @@ Date: 19 April 2021
 import pandas as pd
 import numpy as np
 
-DATASET_DIR = "../../../Dataset/files/"
+DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients" 
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
@@ -86,7 +86,6 @@ def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
         Whether recipe's ingredients contains a token within max_dist of
         the inputted ingredient.
     """
-    print(recipe_series)
     ingredients = recipe_series[ING_CATEGORY_NAME]
     return list_contains_ingredient(ingredients, ingredient_query, max_dist)
     
@@ -136,9 +135,10 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
             banned_foods += diet_r_df[upper_rest].dropna().to_list()
 
     def contains_banned_ing(rec_ser):
-        for food in banned_foods:
-            if contains_ingredient(rec_ser, food, max_dist):
-                return True
+        if banned_foods is not None:
+            for food in banned_foods:
+                if contains_ingredient(rec_ser, food, max_dist):
+                    return True
         return False
 
     count = 0

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px">
+    <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small;">
+        <p>Project Name: Sustainable Sustenence</p>
+        <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
+    </div>
+    <br><br>
+    <form id="recipeData" class="form-inline global-search" style="text-align: left; padding: 20px; display: grid; font-family: Futura;">
+        {% if data %}
+        <h1 style="text-align: left;">{{output_message}}</h1>
+        <br>
+
+        {% for d in data %}
+        <div style="border-width: 10px; border-color: black; border-style: double; padding:10px; margin: 15px;">
+          Description:
+        {{data[d]['description']}}
+        <br></br>
+        {{"Ingredients:"}}
+        
+        
+        <ul style="list-style-type: bullet; display: grid">
+          {% for i in data[d]['ingredients'] %}
+          <li>{{i}}</li>
+          {% endfor %}
+        </ul>
+        
+        <br></br>
+      </div>
+        {% endfor %}
+        {% endif %}
+    </form>
+</body>
+
+</html>
