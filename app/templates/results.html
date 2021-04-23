@@ -5,32 +5,87 @@
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <link rel="stylesheet" href="/static/main.css">
 </head>
-<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px">
-    <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small;">
+<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px; background-size:auto; background-position: top; background-repeat:repeat;">
+    <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small; color: white;">
         <p>Project Name: Sustainable Sustenence</p>
         <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
     </div>
     <br><br>
-    <form id="recipeData" class="form-inline global-search" style="text-align: left; padding: 20px; display: grid; font-family: Futura;">
+    <h1 style="text-align: center; color: white; font-family: Futura;">{{output_message}}</h1>
+    <form id="recipeData" class="form-inline global-search" style="text-align: left; padding: 20px; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row; flex-wrap:wrap">
         {% if data %}
-        <h1 style="text-align: left;">{{output_message}}</h1>
+        
         <br>
+        <style style="display: None;">
+          .flip-card {
+            background-color: transparent;
+            margin: 20px;
+            width: 300px;
+            height: 200px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            perspective: 1000px; /* Remove this if you don't want the 3D effect */
+          }
+
+          /* This container is needed to position the front and back side */
+          .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+          }
+
+          /* Do an horizontal flip when you move the mouse over the flip box container */
+          .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+          }
+
+          /* Position the front and back side */
+          .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            border-radius: 20px;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+          }
+
+          /* Style the front side (fallback if image is missing) */
+          .flip-card-front {
+            background-color: #bfb9b0;
+            color: black;
+          }
+
+          /* Style the back side */
+          .flip-card-back {
+            background-color: #bfb9b0;
+            color: white;
+            transform: rotateY(180deg);
+            overflow:scroll;
+          }
+        </style>
 
         {% for d in data %}
-        <div style="border-width: 10px; border-color: black; border-style: double; padding:10px; margin: 15px;">
-          Description:
-        {{data[d]['description']}}
-        <br></br>
-        {{"Ingredients:"}}
-        
-        
-        <ul style="list-style-type: bullet; display: grid">
-          {% for i in data[d]['ingredients'] %}
-          <li>{{i}}</li>
-          {% endfor %}
-        </ul>
-        
-        <br></br>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              Description:
+              {{data[d]['description']}}
+
+            </div>
+            <div class="flip-card-back">
+              {{"Ingredients:"}}
+              <ul style="list-style-type: bullet; display: flex; flex-direction: column; text-align: left; justify-content:flex-start;">
+                {% for i in data[d]['ingredients'] %}
+                <li>{{i}}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
         {% endfor %}
         {% endif %}
