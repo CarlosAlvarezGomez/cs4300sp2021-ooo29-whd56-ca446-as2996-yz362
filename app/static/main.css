@@ -37,10 +37,13 @@ right:2%;
 }
 .btn{
 background-color: #3d6e15;
-border: none
+border: none;
+font-size: large;
+margin: 10px;
 }
 .step-links a{
 color: #3d6e15;
+font-size: large;
 }
 
 hr{

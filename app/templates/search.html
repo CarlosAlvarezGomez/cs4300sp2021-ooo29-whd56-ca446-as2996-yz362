@@ -20,23 +20,27 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        width: 50%;
+        width: 40%;
         background-color: bfb9b0;
         border-radius: 40px;
         height: 80%;
-        overflow: auto;" action="/search" method="GET">
+        overflow: auto;
+        margin-left: 50px;" 
+        action="/search" 
+        method="GET"
+    >
         <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
         </h1>
         <!-- TEXTBOXES -->
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="font-size: large; font-family: Futura; color: #000000; margin: 15px;">
             What are you in the mood for?
         </h1>
         <div class="form-group">
             <input id="recipe-description" type="text" name="recipe-description" class="form-control"
                 placeholder="Easy, simple autumnal dish">
         </div>
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
             Any allergies?
         </h1>
         <div class="form-group">
@@ -120,51 +124,53 @@
         </script>
 
         <!-- SLIDERS -->
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
             How much time do you want to spend cooking?
         </h1>
-
-        <div class="slidecontainer">
-            <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="5" class="slider">
-            <span id="time"></span>
+        <div style="width:50%; font-family: Futura;" class="slidecontainer">
+            <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="60" class="slider">
+            <span style="margin: 10px;" id="time"></span>
         </div>
-        <!-- <h1 style="font-size: medium; font-family: Futura; color: #000000">
-            Ecological factor?
-        </h1> -->
-        <div class="popup" onclick="myFunction()" style="font-size: medium; font-family: Futura; color: #000000">
-            Ecological factor? Click here for more information.
-            <span class="popuptext" id="myPopup">This ecological factor score is determined by the carbon footprint of
-                the recipes we choose for you. Recipes with a ecological factor higher than the value you choose will
-                not be included in the recipes we choose for you.</span>
-        </div>
-        <div class="slidecontainer">
-            <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="5" class="slider">
-            <span id="eco"></span>
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
+            How important is the recipe carbon footprint?
+        </h1>
+        <div style="width:60%; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row;" class="slidecontainer">
+            <span style=" font-family: Futura;margin: 10px; text-align:center" id="eco">Not Important</span>
+            <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="40" class="slider" >
+            <span style="margin: 10px;text-align:center; font-family: Futura;" id="eco">Very Important</span>
         </div>
 
         <script style="display: none;">
-            var ecoSlider = document.getElementById("ecoSlide");
-            var eco = document.getElementById("eco");
-            eco.innerHTML = ecoSlider.value;
-
-            ecoSlider.oninput = function () {
-                eco.innerHTML = this.value;
-            }
+            // var ecoSlider = document.getElementById("ecoSlide");
+            // var eco = document.getElementById("eco");
+            // eco.innerHTML = ecoSlider.value;
+              
+            // ecoSlider.oninput = function() {
+            //   eco.innerHTML = this.value;
+            // }
 
             timeSlider = document.getElementById("timeSlide");
             time = document.getElementById("time");
-            time.innerHTML = timeSlider.value;
-
-            timeSlider.oninput = function () {
-                time.innerHTML = this.value;
+            time.innerHTML = timeSlider.value + " minutes";
+              
+            timeSlider.oninput = function() {
+                if(this.value == 1){
+                    time.innerHTML = this.value + " minute";
+                } else {
+                    time.innerHTML = this.value + " minutes";
+                }
+              
             }
         </script>
 
-
-
-        <label style="font-size: medium; font-family: Futura; color: #000000; font-weight: lighter;">Dietary
-            Restrictions?</label>
-        <select name="diet_req" style="font-size: medium; font-family: Futura; color: #000000; font-weight: lighter;">
+        <h1 style="font-size: large; font-family: Futura; color: #000000;">Dietary Restrictions?</label>
+        <select name="diet_req" style="
+        margin: 15px;
+        font-family: Futura;
+        border-radius: 5px;
+        border-color: transparent;
+        padding: 5px;
+    ">
             <option id="none" name="diet_req" value="">None</option>
             <option id="vegan" name="diet_req" value="vegan">Vegan</option>
             <option id="vegetarian" name="diet_req" value="vegetarian">Vegetarian</option>
