@@ -9,80 +9,88 @@
     <script src="/dynamic/sliders.js"></script>
 </head>
 
-<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding-top: 15px">
+<body style="font-family: 'Roboto', sans-serif; padding-top: 15px">
     <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small;">
         <p>Project Name: Sustainable Sustenence</p>
         <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
     </div>
 
     <!-- TITLE -->
-    <form class="form-inline global-search" action="/search" method="GET">
+    <form 
+        class="form-inline global-search" 
+        style="display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 50%;
+        background-color: bfb9b0;
+        border-radius: 40px;
+        height: 80%;
+        overflow: auto;" 
+        action="/search" 
+        method="GET"
+    >
         <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
         </h1>
-
-        <br><br>
         <!-- TEXTBOXES -->
-        <br><br>
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
             What are you in the mood for?
         </h1>
-        <br><br>
         <div class="form-group">
             <input id="recipe-description" type="text" name="recipe-description" class="form-control"
                 placeholder="Easy, simple autumnal dish">
         </div>
-        <br><br>
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
             Any allergies?
         </h1>
-        <br><br>
         <div class="form-group">
             <input id="allergies" type="text" name="allergies" class="form-control"
                 placeholder="Peanuts, gluten, cashews, ...">
         </div>
-        <br><br>
 
         <!-- SLIDERS -->
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
             How much time do you want to spend cooking?
         </h1>
-        <br><br>
         <div class="slidecontainer">
             <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="5" class="slider">
+            <span id="time"></span>
         </div>
-        <br><br>
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
             Ecological factor?
         </h1>
-        <br><br>
         <div class="slidecontainer">
             <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="5" class="slider">
+            <span id="eco"></span>
         </div>
-        <br><br>
 
-        <!-- CHECKBOXES -->
-        <!-- <h1 style="font-size: medium; font-family: Futura; color: #000000">
-            Any dietary requirements?
-        </h1>
-        <br><br>
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegan
-            <input id="vegan" name= "diet_req" value="vegan" type="checkbox" checked="checked">
-            <span class="checkmark"></span>
-        </label>
-        <br><br>
+        <script style="display: none;">
+            var ecoSlider = document.getElementById("ecoSlide");
+            var eco = document.getElementById("eco");
+            eco.innerHTML = ecoSlider.value;
+              
+            ecoSlider.oninput = function() {
+              eco.innerHTML = this.value;
+            }
 
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegetarian
-            <input id="vegetarian" name= "diet_req" value="vegetarian" type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <br><br>
+            timeSlider = document.getElementById("timeSlide");
+            time = document.getElementById("time");
+            time.innerHTML = timeSlider.value;
+              
+            timeSlider.oninput = function() {
+              time.innerHTML = this.value;
+            }
+        </script>
+            
 
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Pescatarian
-            <input id="pescatarian" name= "diet_req" value="pescatarian" type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <br><br> -->
+        <label>Dietary Restrictions?</label>
+        <select name="diet_req">
+            <option id="none" name="diet_req" value="">None</option>
+            <option id="vegan" name= "diet_req" value="vegan">Vegan</option>
+            <option id="vegetarian" name= "diet_req" value="vegetarian">Vegetarian</option>
+            <option id="pescatarian" name= "diet_req"value="pescatarian">Pescatarian</option>
+        </select>
 
 
         <!-- SUBMIT BUTTON -->
