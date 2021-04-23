@@ -132,7 +132,7 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     for restriction in [VEGET, VEGAN, PESCA]:
         upper_rest = restriction.upper()
         if restriction in dietary_restrictions:
-            banned_foods += diet_r_df[upper_rest].dropna().to_list()
+            banned_foods += diet_r_df[upper_rest].dropna()
 
     def contains_banned_ing(rec_ser):
         if banned_foods is not None:
