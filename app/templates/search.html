@@ -134,6 +134,12 @@
         <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
             How important is the recipe carbon footprint?
         </h1>
+        <div class="popup" onclick="myFunction()" style="font-size: small; font-family: Futura; color: #000000">
+            Click here for more information.
+            <span class="popuptext" id="myPopup" style="padding: 10px; ">This ecological factor score is determined by the carbon footprint of
+                the recipes we choose for you. Recipes with a ecological factor higher than the value you choose will
+                not be included in the recipes we choose for you.</span>
+        </div>
         <div style="width:60%; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row;" class="slidecontainer">
             <span style=" font-family: Futura;margin: 10px; text-align:center" id="eco">Not Important</span>
             <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="40" class="slider" >
