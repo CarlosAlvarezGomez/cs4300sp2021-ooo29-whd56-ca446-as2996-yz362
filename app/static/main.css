@@ -8,10 +8,14 @@
 padding: 20px 0;
 }
 body {
-padding-top: 15px;
-padding-bottom: 15px;
-background-color: rgb(102, 64, 14);
-font-family: 'Roboto', sans-serif;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-family: 'Roboto', sans-serif;
+    background-image: url(ingredients-498199_1280.png);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .global-search {
 text-align:left;
@@ -20,7 +24,6 @@ padding:10px;
 .global-search .form-control {
     width:500px;
     text-align: left;
-    margin-left: 100px
 }
 .global-search * {
 display:grid;
@@ -47,4 +50,11 @@ hr{
 #recipeData.ul {
     list-style-type: bullet;
     text-align: left
+}
+h1 {
+    margin: 15px;
+}
+
+.checkboxcontainer {
+    width: 100%;
 }
