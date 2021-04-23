@@ -16,9 +16,7 @@
     </div>
 
     <!-- TITLE -->
-    <form 
-        class="form-inline global-search" 
-        style="display: flex;
+    <form class="form-inline global-search" style="display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
@@ -26,10 +24,7 @@
         background-color: bfb9b0;
         border-radius: 40px;
         height: 80%;
-        overflow: auto;" 
-        action="/search" 
-        method="GET"
-    >
+        overflow: auto;" action="/search" method="GET">
         <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
         </h1>
@@ -49,17 +44,99 @@
                 placeholder="Peanuts, gluten, cashews, ...">
         </div>
 
+        <style style="display: none;">
+            /* Popup container */
+            .popup {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            /* The actual popup (appears on top) */
+            .popup .popuptext {
+                visibility: hidden;
+                width: 160px;
+                background-color: #555;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 8px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -80px;
+            }
+
+            /* Popup arrow */
+            .popup .popuptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+            }
+
+            /* Toggle this class when clicking on the popup container (hide and show the popup) */
+            .popup .show {
+                visibility: visible;
+                -webkit-animation: fadeIn 1s;
+                animation: fadeIn 1s
+            }
+
+            /* Add animation (fade in the popup) */
+            @-webkit-keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+
+        <script style="display: none;">
+            // When the user clicks on <div>, open the popup
+            function myFunction() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
+        </script>
+
         <!-- SLIDERS -->
         <h1 style="font-size: medium; font-family: Futura; color: #000000">
             How much time do you want to spend cooking?
         </h1>
+
         <div class="slidecontainer">
             <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="5" class="slider">
             <span id="time"></span>
         </div>
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <!-- <h1 style="font-size: medium; font-family: Futura; color: #000000">
             Ecological factor?
-        </h1>
+        </h1> -->
+        <div class="popup" onclick="myFunction()" style="font-size: medium; font-family: Futura; color: #000000">
+            Ecological factor? Click here for more information.
+            <span class="popuptext" id="myPopup">This ecological factor score is determined by the carbon footprint of
+                the recipes we choose for you. Recipes with a ecological factor higher than the value you choose will
+                not be included in the recipes we choose for you.</span>
+        </div>
         <div class="slidecontainer">
             <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="5" class="slider">
             <span id="eco"></span>
@@ -69,29 +146,32 @@
             var ecoSlider = document.getElementById("ecoSlide");
             var eco = document.getElementById("eco");
             eco.innerHTML = ecoSlider.value;
-              
-            ecoSlider.oninput = function() {
-              eco.innerHTML = this.value;
+
+            ecoSlider.oninput = function () {
+                eco.innerHTML = this.value;
             }
 
             timeSlider = document.getElementById("timeSlide");
             time = document.getElementById("time");
             time.innerHTML = timeSlider.value;
-              
-            timeSlider.oninput = function() {
-              time.innerHTML = this.value;
+
+            timeSlider.oninput = function () {
+                time.innerHTML = this.value;
             }
         </script>
-            
 
-        <label>Dietary Restrictions?</label>
-        <select name="diet_req">
+
+
+        <label style="font-size: medium; font-family: Futura; color: #000000; font-weight: lighter;">Dietary
+            Restrictions?</label>
+        <select name="diet_req" style="font-size: medium; font-family: Futura; color: #000000; font-weight: lighter;">
             <option id="none" name="diet_req" value="">None</option>
-            <option id="vegan" name= "diet_req" value="vegan">Vegan</option>
-            <option id="vegetarian" name= "diet_req" value="vegetarian">Vegetarian</option>
-            <option id="pescatarian" name= "diet_req"value="pescatarian">Pescatarian</option>
+            <option id="vegan" name="diet_req" value="vegan">Vegan</option>
+            <option id="vegetarian" name="diet_req" value="vegetarian">Vegetarian</option>
+            <option id="pescatarian" name="diet_req" value="pescatarian">Pescatarian</option>
         </select>
 
+        <br><br>
 
         <!-- SUBMIT BUTTON -->
         <button type="submit" class="btn btn-info"> Find me recipes! </button>
