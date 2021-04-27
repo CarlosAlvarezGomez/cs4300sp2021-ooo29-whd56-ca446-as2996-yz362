@@ -21,8 +21,15 @@ global inverted_index
 global recipes
 recipes = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv',index_col='id')
 inverted_index = SIM.make_inverted_index(recipes)
+
 global recipe_ids
 recipe_ids = list(recipes.index)
+
+global reviews
+reviews = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_reviews.csv')
+
+global agg_review_info
+agg_review_info = pd.DataFrame(reviews.groupby('recipe_id').agg({'recipe_id':'count','rating':'mean'})).rename(columns={'recipe_id':'count'})
 
 # calculate ecological ranking
 global ecoDF
@@ -83,6 +90,9 @@ def search():
 		"name":recipes.loc[id,'name'],
 		"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 		"description":recipes.loc[id,'description'],
-		"steps":ast.literal_eval(recipes.loc[id,'steps'])
+		"steps":ast.literal_eval(recipes.loc[id,'steps']),
+		"emission":ecoDF.loc[id,'CO2'],
+		"n_reviews":agg_review_info.loc[id,'count'],
+		"avg_rating":round(agg_review_info.loc[id,'rating'],2)
 		} # THIS WILL NEED TO TAKE IN ML COMPONENT RESULTS AND MAYBE FOORPRINT INFO?
 	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
