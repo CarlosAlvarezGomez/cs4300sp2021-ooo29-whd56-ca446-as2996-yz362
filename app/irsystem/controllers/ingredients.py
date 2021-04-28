@@ -9,11 +9,13 @@ Date: 19 April 2021
 import pandas as pd
 import numpy as np
 
-DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+DATASET_DIR = "Dataset/files/"
+#"app/irsystem/controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients"
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
 DIETARY_FILENAME = "{}dietary_restrictions.csv".format(DATASET_DIR)
+ALIAS_CSV = "{}meat_aliases.csv".format(DATASET_DIR)
 
 def tokenize_recipe_ingredients(df):
     """
@@ -96,7 +98,7 @@ def list_contains_ingredient(ingredients, ingredient_query, max_dist=2):
             return True
     return False
 
-def make_meat_alias_dict(ALIAS_CSV="meat_aliases.csv"):
+def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
     """
     Creates dictionary that maps obscure meat parts to their
     common names. Based on specific file structure of a CSV
