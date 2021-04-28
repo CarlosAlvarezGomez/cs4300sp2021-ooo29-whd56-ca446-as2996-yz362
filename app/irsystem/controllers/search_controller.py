@@ -107,7 +107,7 @@ def search():
 			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 			"description":recipes.loc[id,'description'],
 			"steps":ast.literal_eval(recipes.loc[id,'steps']),
-			"emission":float(ecoDF[ecoDF['id']==id]['CO2']),
+			"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
 			"n_reviews":int(agg_review_info.loc[id,'count']),
 			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
 			"degree":'first'
@@ -121,7 +121,7 @@ def search():
 				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 				"description":recipes.loc[id,'description'],
 				"steps":ast.literal_eval(recipes.loc[id,'steps']),
-				"emission":float(ecoDF[ecoDF['id']==id]['CO2']),
+				"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
 				"n_reviews":int(agg_review_info.loc[id,'count']),
 				"avg_rating":round(agg_review_info.loc[id,'rating'],2),
 				"degree":'second'

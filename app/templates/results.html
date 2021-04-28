@@ -4,6 +4,8 @@
 <head>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <link rel="stylesheet" href="/static/main.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Your Results - Sustainable Sustenence</title>
 </head>
 <body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px; background-size:auto; background-position: top; background-repeat:repeat;">
     <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small; color: white;">
@@ -21,8 +23,8 @@
             background-color: transparent;
             margin: 20px;
             width: 300px;
-            height: 200px;
-            border: 1px solid transparent;
+            height: 500px;
+            border:1px solid transparent;
             border-radius: 10px;
             perspective: 1000px; /* Remove this if you don't want the 3D effect */
           }
@@ -38,7 +40,7 @@
           }
 
           /* Do an horizontal flip when you move the mouse over the flip box container */
-          .flip-card:hover .flip-card-inner {
+          .flip-card.clicked .flip-card-inner {
             transform: rotateY(180deg);
           }
 
@@ -66,23 +68,47 @@
             transform: rotateY(180deg);
             overflow:scroll;
           }
+
+          ul {
+            list-style-type: circle;
+          }
         </style>
 
         {% for d in data %}
-        <div class="flip-card">
+        <div class="flip-card" onclick="this.classList.toggle('clicked');">
           <div class="flip-card-inner">
-            <div class="flip-card-front">
-              Description:
+            <div class="flip-card-front" 
+              style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column; text-align: left"
+            >
+              <div style="font-size:25px; font-weight: bold; margin: 10px;">{{data[d]['name']}}</div>
+              <div style="margin:5px; height: 50%; overflow:scroll">Description:
               {{data[d]['description']}}
+            </div>
+            <div style="margin-left:5px; margin-top:15px;">
+              Emission:
+              {{data[d]['emission']}}
+            </div>
+            <div style="margin-left:5px; margin-top:15px;">
+              Average Rating:
+              {{data[d]['avg_rating']}}
+            </div>
 
             </div>
-            <div class="flip-card-back">
-              {{"Ingredients:"}}
-              <ul style="list-style-type: bullet; display: flex; flex-direction: column; text-align: left; justify-content:flex-start;">
+            <div class="flip-card-back"
+              style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column; text-align: left"
+            >
+              Ingredients:
+              <ul style="display: flex; flex-direction: column; text-align: left; justify-content:flex-start; padding: 15px;">
                 {% for i in data[d]['ingredients'] %}
                 <li>{{i}}</li>
                 {% endfor %}
               </ul>
+              Steps:
+              <ol style="display: flex; flex-direction: column; text-align: left; justify-content:flex-start; padding: 15px; list-style-type:circle">
+                {% for i in data[d]['steps'] %}
+                <li style="padding: 5px;">{{i}}</li>
+                {% endfor %}
+              </ol>
             </div>
           </div>
         </div>

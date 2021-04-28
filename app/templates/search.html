@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="/static/main.css">
     <link rel="stylesheet" href="/static/sliders.css">
     <link rel="stylesheet" href="/static/checkbox.css">
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Sustainable Sustenence</title>
     <script src="/dynamic/sliders.js"></script>
 </head>
 
@@ -129,10 +130,10 @@
         </h1>
         <div style="width:50%; font-family: Futura;" class="slidecontainer">
             <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="60" class="slider">
-            <span style="margin: 10px;" id="time"></span>
+            <span style="margin: 10px; text-align: center;" id="time"></span>
         </div>
         <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
-            How important is the recipe carbon footprint?
+            What's your recipe carbon footprint limit?
         </h1>
         <div class="popup" onclick="myFunction()" style="font-size: small; font-family: Futura; color: #000000">
             Click here for more information.
@@ -141,19 +142,20 @@
                 not be included in the recipes we choose for you.</span>
         </div>
         <div style="width:60%; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row;" class="slidecontainer">
-            <span style=" font-family: Futura;margin: 10px; text-align:center" id="eco">Not Important</span>
+            <span style="margin: 10px;" >0</span>
             <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="40" class="slider" >
-            <span style="margin: 10px;text-align:center; font-family: Futura;" id="eco">Very Important</span>
+            <span style="margin: 10px;text-align:center; font-family: Futura;">80</span>
         </div>
+        <span style="margin: 10px; font-family: Futura;margin: 10px; display: flex;align-items: center; justify-content: center;" id="eco"></span>
 
         <script style="display: none;">
-            // var ecoSlider = document.getElementById("ecoSlide");
-            // var eco = document.getElementById("eco");
-            // eco.innerHTML = ecoSlider.value;
+            var ecoSlider = document.getElementById("ecoSlide");
+            var eco = document.getElementById("eco");
+            eco.innerHTML = ecoSlider.value;
               
-            // ecoSlider.oninput = function() {
-            //   eco.innerHTML = this.value;
-            // }
+            ecoSlider.oninput = function() {
+              eco.innerHTML = this.value;
+            }
 
             timeSlider = document.getElementById("timeSlide");
             time = document.getElementById("time");
