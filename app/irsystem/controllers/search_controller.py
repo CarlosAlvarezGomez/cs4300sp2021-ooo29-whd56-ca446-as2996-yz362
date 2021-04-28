@@ -11,7 +11,7 @@ import ast
 from . import descSimilarity as SIM # IMPORT SIMILARITY FUNCTION
 from . import ingredients as IG # IMPORT INGREDIENTS FUNCTION
 import numpy as np
-import pickle
+import pickle5 as pickle
 
 
 project_name = "Ilan's Cool Project Template"
