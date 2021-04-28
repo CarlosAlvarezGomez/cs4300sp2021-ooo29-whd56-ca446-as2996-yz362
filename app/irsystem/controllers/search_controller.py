@@ -39,7 +39,7 @@ global ecoRankedList
 global ecoRank
 ecoDF = IG.get_recipe_co2_df()
 ecoRankedList = list(ecoDF['id'])
-ecoDF = ecoDF.set_index('id')
+#ecoDF = ecoDF.set_index('id')
 ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
 # clustering
@@ -96,33 +96,34 @@ def search():
 		for id in data[:10]:
 			rec = most_sim_recipes[id]
 			if rec not in data:
-				rec.append(rec)
+				reccomend.append(rec)
 
 
 	output = {}
-
+	
 	for id in data:
 		output[id] = {
-		"name":recipes.loc[id,'name'],
-		"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
-		"description":recipes.loc[id,'description'],
-		"steps":ast.literal_eval(recipes.loc[id,'steps']),
-		"emission":float(ecoDF.loc[id,'CO2']),
-		"n_reviews":int(agg_review_info.loc[id,'count']),
-		"avg_rating":round(agg_review_info.loc[id,'rating'],2),
-		"degree":'first'
-		}
-
-	if len(reccomend)>0:
-		for id in reccomend:
-			output[id] = {
 			"name":recipes.loc[id,'name'],
 			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 			"description":recipes.loc[id,'description'],
 			"steps":ast.literal_eval(recipes.loc[id,'steps']),
-			"emission":float(ecoDF.loc[id,'CO2']),
+			"emission":float(ecoDF[ecoDF['id']==id]['CO2']),
 			"n_reviews":int(agg_review_info.loc[id,'count']),
 			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
-			"degree":'second'
+			"degree":'first'
 			}
+
+
+	if len(reccomend)>0:
+		for id in reccomend:
+			output[id] = {
+				"name":recipes.loc[id,'name'],
+				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+				"description":recipes.loc[id,'description'],
+				"steps":ast.literal_eval(recipes.loc[id,'steps']),
+				"emission":float(ecoDF[ecoDF['id']==id]['CO2']),
+				"n_reviews":int(agg_review_info.loc[id,'count']),
+				"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+				"degree":'second'
+				}
 	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
