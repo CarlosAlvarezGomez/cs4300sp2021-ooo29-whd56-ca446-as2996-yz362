@@ -38,8 +38,8 @@ global ecoDF
 global ecoRankedList
 global ecoRank
 ecoDF = IG.get_recipe_co2_df()
-ecoDF = ecoDF.set_index('id')
 ecoRankedList = list(ecoDF['id'])
+ecoDF = ecoDF.set_index('id')
 ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
 # clustering
