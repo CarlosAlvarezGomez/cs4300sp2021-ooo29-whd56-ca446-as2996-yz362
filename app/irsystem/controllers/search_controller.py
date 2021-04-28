@@ -38,6 +38,7 @@ global ecoDF
 global ecoRankedList
 global ecoRank
 ecoDF = IG.get_recipe_co2_df()
+ecoDF = ecoDF.set_index('id')
 ecoRankedList = list(ecoDF['id'])
 ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
 
@@ -106,8 +107,8 @@ def search():
 		"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 		"description":recipes.loc[id,'description'],
 		"steps":ast.literal_eval(recipes.loc[id,'steps']),
-		"emission":ecoDF.loc[id,'CO2'],
-		"n_reviews":agg_review_info.loc[id,'count'],
+		"emission":float(ecoDF.loc[id,'CO2']),
+		"n_reviews":int(agg_review_info.loc[id,'count']),
 		"avg_rating":round(agg_review_info.loc[id,'rating'],2),
 		"degree":'first'
 		}
@@ -119,8 +120,8 @@ def search():
 			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 			"description":recipes.loc[id,'description'],
 			"steps":ast.literal_eval(recipes.loc[id,'steps']),
-			"emission":ecoDF.loc[id,'CO2'],
-			"n_reviews":agg_review_info.loc[id,'count'],
+			"emission":float(ecoDF.loc[id,'CO2']),
+			"n_reviews":int(agg_review_info.loc[id,'count']),
 			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
 			"degree":'second'
 			}
