@@ -10,6 +10,8 @@ import os
 import ast
 from . import descSimilarity as SIM # IMPORT SIMILARITY FUNCTION
 from . import ingredients as IG # IMPORT INGREDIENTS FUNCTION
+import numpy as np
+import pickle
 
 
 project_name = "Ilan's Cool Project Template"
@@ -38,6 +40,11 @@ global ecoRank
 ecoDF = IG.get_recipe_co2_df()
 ecoRankedList = list(ecoDF['id'])
 ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
+
+# clustering
+global most_sim_recipes
+with open('app/irsystem/controllers/Dataset/files/most_sim_recipes.pkl', 'rb') as handle:
+    most_sim_recipes = pickle.load(handle)
 
 @irsystem.route('/')
 def main():
@@ -81,7 +88,15 @@ def search():
 					# finalRank[recipe] = descripRank[recipe]
 
 		data = sorted(finalRank, key = lambda k:finalRank[k])[:100]
-		data = IG.first_n_filtered(data,allergies,dietReq,20)
+		data = IG.first_n_filtered(data,allergies,dietReq,15)
+
+		# second degree search of recipes users may be interested in based on social information
+		reccomend = []
+		for id in data[:10]:
+			rec = most_sim_recipes[id]
+			if rec not in data:
+				rec.append(rec)
+
 
 	output = {}
 
@@ -93,6 +108,20 @@ def search():
 		"steps":ast.literal_eval(recipes.loc[id,'steps']),
 		"emission":ecoDF.loc[id,'CO2'],
 		"n_reviews":agg_review_info.loc[id,'count'],
-		"avg_rating":round(agg_review_info.loc[id,'rating'],2)
-		} # THIS WILL NEED TO TAKE IN ML COMPONENT RESULTS AND MAYBE FOORPRINT INFO?
+		"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+		"degree":'first'
+		}
+
+	if len(reccomend)>0:
+		for id in reccomend:
+			output[id] = {
+			"name":recipes.loc[id,'name'],
+			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+			"description":recipes.loc[id,'description'],
+			"steps":ast.literal_eval(recipes.loc[id,'steps']),
+			"emission":ecoDF.loc[id,'CO2'],
+			"n_reviews":agg_review_info.loc[id,'count'],
+			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+			"degree":'second'
+			}
 	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
