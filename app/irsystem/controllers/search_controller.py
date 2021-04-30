@@ -113,10 +113,10 @@ def search():
 			"degree":'first'
 			}
 
-
+	rec = {}
 	if len(reccomend)>0:
 		for id in reccomend:
-			output[id] = {
+			rec[id] = {
 				"name":recipes.loc[id,'name'],
 				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 				"description":recipes.loc[id,'description'],
@@ -126,4 +126,4 @@ def search():
 				"avg_rating":round(agg_review_info.loc[id,'rating'],2),
 				"degree":'second'
 				}
-	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
+	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output, recommendation=rec)

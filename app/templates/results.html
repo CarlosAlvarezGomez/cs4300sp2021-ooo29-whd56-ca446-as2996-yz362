@@ -114,6 +114,47 @@
         </div>
       </div>
         {% endfor %}
+        <h1 style="margin: 10px; text-align: center; color: white; font-family: Futura;">Looking for more? Here are some recommendations based on the top results of your search!</h1>
+        {% for r in recommendation %}
+        <div class="flip-card" onclick="this.classList.toggle('clicked');">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" 
+              style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column; text-align: left"
+            >
+              <div style="font-size:25px; font-weight: bold; margin: 10px;">{{recommendation[r]['name']}}</div>
+              <div style="margin:5px; height: 50%; overflow:scroll">Description:
+              {{recommendation[r]['description']}}
+            </div>
+            <div style="margin-left:5px; margin-top:15px;">
+              Emission:
+              {{recommendation[r]['emission']}}
+            </div>
+            <div style="margin-left:5px; margin-top:15px;">
+              Average Rating:
+              {{recommendation[r]['avg_rating']}}
+            </div>
+
+            </div>
+            <div class="flip-card-back"
+              style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column; text-align: left"
+            >
+              Ingredients:
+              <ul style="display: flex; flex-direction: column; text-align: left; justify-content:flex-start; padding: 15px;">
+                {% for i in recommendation[r]['ingredients'] %}
+                <li>{{i}}</li>
+                {% endfor %}
+              </ul>
+              Steps:
+              <ol style="display: flex; flex-direction: column; text-align: left; justify-content:flex-start; padding: 15px; list-style-type:circle">
+                {% for i in recommendation[r]['steps'] %}
+                <li style="padding: 5px;">{{i}}</li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+        {% endfor %}
         {% endif %}
     </form>
 </body>
