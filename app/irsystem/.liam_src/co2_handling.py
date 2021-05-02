@@ -1,7 +1,7 @@
 import pandas as pd
 import ingredients as ingr
 from time import time
-DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+DATASET_DIR = "../controllers/Dataset/files/"
 FOOTPRINT_FILE = "{}Footprint.csv".format(DATASET_DIR)
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 RECIPE_CO2_FILENAME = "recipes_co2_sorted.csv"

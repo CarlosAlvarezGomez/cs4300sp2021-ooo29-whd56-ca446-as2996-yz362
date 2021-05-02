@@ -1,6 +1,6 @@
-""" 
-Handles all duties related to ingredients 
-within the recipe dataset, including 
+"""
+Handles all duties related to ingredients
+within the recipe dataset, including
 tokenization and similarity measures.
 
 Author: Liam Daniels
@@ -11,15 +11,16 @@ import numpy as np
 
 DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
-ING_CATEGORY_NAME = "ingredients" 
+ING_CATEGORY_NAME = "ingredients"
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
 DIETARY_FILENAME = "{}dietary_restrictions.csv".format(DATASET_DIR)
+ALIAS_CSV = "{}meat_aliases.csv".format(DATASET_DIR)
 
 def tokenize_recipe_ingredients(df):
     """
     Given a dataframe of the sampled recipe data,
     replaces that dataframe's ingredients field
-    with a list of strings (tokens) instead of a 
+    with a list of strings (tokens) instead of a
     single long string. Also outputs this modified
     dataframe.
     """
@@ -54,8 +55,8 @@ def calc_edit_distance(s1, s2):
         for j in range(1, n):
             matrix[i, j] = min(
                 matrix[i - 1, j] + DELETE_COST,
-                matrix[i, j - 1] + INSERT_COST, 
-                matrix[i - 1, j - 1] + sub_func(s1, s2, i, j) 
+                matrix[i, j - 1] + INSERT_COST,
+                matrix[i - 1, j - 1] + sub_func(s1, s2, i, j)
             )
 
     return matrix[-1][-1]
@@ -63,8 +64,8 @@ def calc_edit_distance(s1, s2):
 def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
     """
     Checks whether or not a given recipe has an ingredient that
-    is within a certain edit distance from the inputted ingredient 
-    string. 
+    is within a certain edit distance from the inputted ingredient
+    string.
 
     Precondition: ingredients have already been tokenized.
 
@@ -77,7 +78,7 @@ def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
         The ingredient being checked for within the recipe's ingredients.
 
     max_dist : int
-        The largest edit distance such that two strings are still 
+        The largest edit distance such that two strings are still
         considered equal.
 
     Returns:
@@ -88,7 +89,7 @@ def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
     """
     ingredients = recipe_series[ING_CATEGORY_NAME]
     return list_contains_ingredient(ingredients, ingredient_query, max_dist)
-    
+
 
 def list_contains_ingredient(ingredients, ingredient_query, max_dist=2):
     for ing in ingredients:
@@ -96,7 +97,7 @@ def list_contains_ingredient(ingredients, ingredient_query, max_dist=2):
             return True
     return False
 
-def make_meat_alias_dict(ALIAS_CSV="meat_aliases.csv"):
+def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
     """
     Creates dictionary that maps obscure meat parts to their
     common names. Based on specific file structure of a CSV
@@ -132,7 +133,7 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     for restriction in [VEGET, VEGAN, PESCA]:
         upper_rest = restriction.upper()
         if restriction in dietary_restrictions:
-            banned_foods += diet_r_df[upper_rest].dropna().to_list()
+            banned_foods += diet_r_df[upper_rest].dropna()
 
     def contains_banned_ing(rec_ser):
         if banned_foods is not None:

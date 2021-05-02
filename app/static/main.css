@@ -8,10 +8,14 @@
 padding: 20px 0;
 }
 body {
-padding-top: 15px;
-padding-bottom: 15px;
-background-color: rgb(102, 64, 14);
-font-family: 'Roboto', sans-serif;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-family: 'Roboto', sans-serif;
+    background-image: url(ingredients-498199_1280.png);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .global-search {
 text-align:left;
@@ -20,7 +24,6 @@ padding:10px;
 .global-search .form-control {
     width:500px;
     text-align: left;
-    margin-left: 100px
 }
 .global-search * {
 display:grid;
@@ -34,10 +37,13 @@ right:2%;
 }
 .btn{
 background-color: #3d6e15;
-border: none
+border: none;
+font-size: large;
+margin: 10px;
 }
 .step-links a{
 color: #3d6e15;
+font-size: large;
 }
 
 hr{
@@ -48,3 +54,66 @@ hr{
     list-style-type: bullet;
     text-align: left
 }
+h1 {
+    margin: 15px;
+}
+
+.checkboxcontainer {
+    width: 100%;
+}
+
+
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  /* The actual popup (appears on top) */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class when clicking on the popup container (hide and show the popup) */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }

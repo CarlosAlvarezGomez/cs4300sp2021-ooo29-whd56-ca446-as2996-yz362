@@ -15,7 +15,7 @@ PATH_TO_INVERTED_INDEX = 'app/irsystem/controllers/Dataset/files/inverted_index.
 PATH_TO_DOC_NORMS = 'app/irsystem/controllers/Dataset/files/doc_norms.csv'
 
 # Number of docs
-N_DOCS = 61955
+N_DOCS = 14794
 
 # Imports the recipe data
 # doc_dataframe = pd.read_csv(PATH_TO_RECIPES)
@@ -26,7 +26,7 @@ def tokenize_string(string):
 
 # Filters an inverted index using the so that it only keeps terms that are
 # in the desired range
-def filter_inverted_index(inverted_index_input, min_df=0.1, max_df=.9, n_docs=N_DOCS):
+def filter_inverted_index(inverted_index_input, min_df=0.0, max_df=.9, n_docs=N_DOCS):
   new_inverted_index = {}
   minimum = min_df * n_docs
   maximum = max_df * n_docs
@@ -166,3 +166,8 @@ def get_cosine_similarities(query, inverted_index, n_docs=N_DOCS):
   scores = {key:val for key, val in sorted(scores.items(), key=lambda x : x[1], reverse=True)}
   
   return scores
+
+# doc_dataframe = pd.read_csv('Dataset/files/sampled_recipes.csv',index_col='id')
+# inverted_index = make_inverted_index(doc_dataframe)
+# dn = make_doc_norms(inverted_index)
+# save_doc_norms(dn)

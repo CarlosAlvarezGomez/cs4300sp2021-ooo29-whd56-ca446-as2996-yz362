@@ -9,7 +9,8 @@ Date: 19 April 2021
 import pandas as pd
 import numpy as np
 
-DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+#DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+DATASET_DIR = "../controllers/Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients" 
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)

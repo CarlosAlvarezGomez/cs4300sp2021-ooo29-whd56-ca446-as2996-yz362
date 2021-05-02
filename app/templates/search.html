@@ -5,85 +5,187 @@
     <link rel="stylesheet" href="/static/main.css">
     <link rel="stylesheet" href="/static/sliders.css">
     <link rel="stylesheet" href="/static/checkbox.css">
-
+    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+    <title>Sustainable Sustenence</title>
     <script src="/dynamic/sliders.js"></script>
 </head>
 
-<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding-top: 15px">
+<body style="font-family: 'Roboto', sans-serif; padding-top: 15px">
     <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small;">
         <p>Project Name: Sustainable Sustenence</p>
         <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
     </div>
 
     <!-- TITLE -->
-    <form class="form-inline global-search" action="/search" method="GET">
+    <form class="form-inline global-search" style="display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 40%;
+        background-color: bfb9b0;
+        border-radius: 40px;
+        height: 80%;
+        overflow: auto;
+        margin-left: 50px;" 
+        action="/search" 
+        method="GET"
+    >
         <h1 style="font-size: 50px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
         </h1>
-
-        <br><br>
         <!-- TEXTBOXES -->
-        <br><br>
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="font-size: large; font-family: Futura; color: #000000; margin: 15px;">
             What are you in the mood for?
         </h1>
-        <br><br>
         <div class="form-group">
             <input id="recipe-description" type="text" name="recipe-description" class="form-control"
                 placeholder="Easy, simple autumnal dish">
         </div>
-        <br><br>
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
             Any allergies?
         </h1>
-        <br><br>
         <div class="form-group">
             <input id="allergies" type="text" name="allergies" class="form-control"
                 placeholder="Peanuts, gluten, cashews, ...">
         </div>
-        <br><br>
+
+        <style style="display: none;">
+            /* Popup container */
+            .popup {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            /* The actual popup (appears on top) */
+            .popup .popuptext {
+                visibility: hidden;
+                width: 160px;
+                background-color: #555;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 8px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -80px;
+            }
+
+            /* Popup arrow */
+            .popup .popuptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+            }
+
+            /* Toggle this class when clicking on the popup container (hide and show the popup) */
+            .popup .show {
+                visibility: visible;
+                -webkit-animation: fadeIn 1s;
+                animation: fadeIn 1s
+            }
+
+            /* Add animation (fade in the popup) */
+            @-webkit-keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+
+        <script style="display: none;">
+            // When the user clicks on <div>, open the popup
+            function myFunction() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
+        </script>
 
         <!-- SLIDERS -->
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
             How much time do you want to spend cooking?
         </h1>
-        <br><br>
-        <div class="slidecontainer">
-            <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="5" class="slider">
+        <div style="width:50%; font-family: Futura;" class="slidecontainer">
+            <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="60" class="slider">
+            <span style="margin: 10px; text-align: center;" id="time"></span>
         </div>
-        <br><br>
-        <h1 style="font-size: medium; font-family: Futura; color: #000000">
-            Ecological factor?
+        <h1 style="margin: 15px; font-size: large; font-family: Futura; color: #000000">
+            What's your recipe carbon footprint limit?
         </h1>
-        <br><br>
-        <div class="slidecontainer">
-            <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="5" class="slider">
+        <div class="popup" onclick="myFunction()" style="font-size: small; font-family: Futura; color: #000000">
+            Click here for more information.
+            <span class="popuptext" id="myPopup" style="padding: 10px; ">This ecological factor score is determined by the carbon footprint of
+                the recipes we choose for you. Recipes with a ecological factor higher than the value you choose will
+                not be included in the recipes we choose for you.</span>
         </div>
-        <br><br>
+        <div style="width:60%; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row;" class="slidecontainer">
+            <span style="margin: 10px;" >0</span>
+            <input id="ecoSlide" name="ecoSlide" type="range" min="1" max="80" value="40" class="slider" >
+            <span style="margin: 10px;text-align:center; font-family: Futura;">80</span>
+        </div>
+        <span style="margin: 10px; font-family: Futura;margin: 10px; display: flex;align-items: center; justify-content: center;" id="eco"></span>
 
-        <!-- CHECKBOXES -->
-        <!-- <h1 style="font-size: medium; font-family: Futura; color: #000000">
-            Any dietary requirements?
-        </h1>
-        <br><br>
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegan
-            <input id="vegan" name= "diet_req" value="vegan" type="checkbox" checked="checked">
-            <span class="checkmark"></span>
-        </label>
-        <br><br>
+        <script style="display: none;">
+            var ecoSlider = document.getElementById("ecoSlide");
+            var eco = document.getElementById("eco");
+            eco.innerHTML = ecoSlider.value;
+              
+            ecoSlider.oninput = function() {
+              eco.innerHTML = this.value;
+            }
 
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Vegetarian
-            <input id="vegetarian" name= "diet_req" value="vegetarian" type="checkbox">
-            <span class="checkmark"></span>
-        </label>
+            timeSlider = document.getElementById("timeSlide");
+            time = document.getElementById("time");
+            time.innerHTML = timeSlider.value + " minutes";
+              
+            timeSlider.oninput = function() {
+                if(this.value == 1){
+                    time.innerHTML = this.value + " minute";
+                } else {
+                    time.innerHTML = this.value + " minutes";
+                }
+              
+            }
+        </script>
+
+        <h1 style="font-size: large; font-family: Futura; color: #000000;">Dietary Restrictions?</label>
+        <select name="diet_req" style="
+        margin: 15px;
+        font-family: Futura;
+        border-radius: 5px;
+        border-color: transparent;
+        padding: 5px;
+    ">
+            <option id="none" name="diet_req" value="">None</option>
+            <option id="vegan" name="diet_req" value="vegan">Vegan</option>
+            <option id="vegetarian" name="diet_req" value="vegetarian">Vegetarian</option>
+            <option id="pescatarian" name="diet_req" value="pescatarian">Pescatarian</option>
+        </select>
+
         <br><br>
-
-        <label class="checkboxcontainer" style="font-family: Futura; font-weight: lighter;">Pescatarian
-            <input id="pescatarian" name= "diet_req" value="pescatarian" type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <br><br> -->
-
 
         <!-- SUBMIT BUTTON -->
         <button type="submit" class="btn btn-info"> Find me recipes! </button>

@@ -10,6 +10,8 @@ import os
 import ast
 from . import descSimilarity as SIM # IMPORT SIMILARITY FUNCTION
 from . import ingredients as IG # IMPORT INGREDIENTS FUNCTION
+import numpy as np
+import pickle5 as pickle
 
 
 project_name = "Ilan's Cool Project Template"
@@ -18,13 +20,32 @@ net_id = "Ilan Filonenko: if56"
 # read recipe database
 # we will want to have a data structure that stores the eco footprint of each recipe, I assume it's in the recipes df for now
 global inverted_index
-
 global recipes
-
 recipes = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv',index_col='id')
 inverted_index = SIM.make_inverted_index(recipes)
+
 global recipe_ids
 recipe_ids = list(recipes.index)
+
+global reviews
+reviews = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_reviews.csv')
+
+global agg_review_info
+agg_review_info = pd.DataFrame(reviews.groupby('recipe_id').agg({'recipe_id':'count','rating':'mean'})).rename(columns={'recipe_id':'count'})
+
+# calculate ecological ranking
+global ecoDF
+global ecoRankedList
+global ecoRank
+ecoDF = IG.get_recipe_co2_df()
+ecoRankedList = list(ecoDF['id'])
+#ecoDF = ecoDF.set_index('id')
+ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
+
+# clustering
+global most_sim_recipes
+with open('app/irsystem/controllers/Dataset/files/most_sim_recipes.pkl', 'rb') as handle:
+    most_sim_recipes = pickle.load(handle)
 
 @irsystem.route('/')
 def main():
@@ -38,18 +59,13 @@ def search():
 	maxFootprint = request.args.get('ecoSlide') # get max footprint
 	maxTime = request.args.get('timeSlide') # get time limits
 	allergies = request.args.get('allergies') # get list of allergies
-	dietReq = request.args.getlist('diet_req')    # get diet requirements
+	dietReq = request.args.get('diet_req')    # get diet requirements
 	description = request.args.get('recipe-description') # get description
 	data = []
 	if (not description):
 		output = {}
 		#output_message = "Please input ingredients or a description to find ecologically friendly recipes!"
 	else:
-		# calculate ecological ranking
-		ecoDF = IG.get_recipe_co2_df()
-		ecoRankedList = list(ecoDF['id'])
-		ecoRank = {id:rank for rank,id in enumerate(ecoRankedList)}
-
 		# calculate description ranking
 		descripList = SIM.get_cosine_similarities(description, inverted_index)
 		# descripRankedList = list(descripDF['recipe_id'])
@@ -57,7 +73,7 @@ def search():
 		descripKeys = descripList.keys()
 		descripRank = {id:rank for rank,id in enumerate(descripKeys)}
 		# set weights
-		ecoW = 0.5
+		ecoW = (float(maxFootprint)/80)*0.2
 		descripW = 1-ecoW
 
 		# finalRanking
@@ -70,16 +86,44 @@ def search():
 				# if the recipe meets time and eco requirements
 				if float(recipes.loc[recipe, 'minutes']) <= float(maxTime): #and float(recipes.loc[recipe,'emission']) <= maxFootprint:
 					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripRank[recipe]
+					# finalRank[recipe] = descripRank[recipe]
 
 		data = sorted(finalRank, key = lambda k:finalRank[k])[:100]
-		data = IG.first_n_filtered(data,allergies,dietReq,20)
+		data = IG.first_n_filtered(data,allergies,dietReq,15)
+
+		# second degree search of recipes users may be interested in based on social information
+		reccomend = []
+		for id in data[:10]:
+			rec = most_sim_recipes[id]
+			if rec not in data:
+				reccomend.append(rec)
+
 
 	output = {}
-
+	
 	for id in data:
 		output[id] = {
-		"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
-		"description":recipes.loc[id,'description']
-		# "steps":recipes.loc[id,'steps']
-		} # THIS WILL NEED TO TAKE IN ML COMPONENT RESULTS AND MAYBE FOORPRINT INFO?
-	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output)
+			"name":recipes.loc[id,'name'],
+			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+			"description":recipes.loc[id,'description'],
+			"steps":ast.literal_eval(recipes.loc[id,'steps']),
+			"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
+			"n_reviews":int(agg_review_info.loc[id,'count']),
+			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+			"degree":'first'
+			}
+
+	rec = {}
+	if len(reccomend)>0:
+		for id in reccomend:
+			rec[id] = {
+				"name":recipes.loc[id,'name'],
+				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+				"description":recipes.loc[id,'description'],
+				"steps":ast.literal_eval(recipes.loc[id,'steps']),
+				"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
+				"n_reviews":int(agg_review_info.loc[id,'count']),
+				"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+				"degree":'second'
+				}
+	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output, recommendation=rec)
