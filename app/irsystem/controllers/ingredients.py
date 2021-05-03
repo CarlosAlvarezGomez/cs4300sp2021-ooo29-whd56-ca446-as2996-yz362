@@ -9,14 +9,15 @@ Date: 3 May 2021
 import pandas as pd
 import numpy as np
 
-DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+#DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 # For testing:
-#DATASET_DIR = "Dataset/files/"
+DATASET_DIR = "Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients"
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
 DIETARY_FILENAME = "{}dietary_restrictions.csv".format(DATASET_DIR)
 ALIAS_CSV = "{}meat_aliases.csv".format(DATASET_DIR)
+ALLERGY_CSV = "{}allergy_aliases.csv".format(DATASET_DIR)
 
 def tokenize_recipe_ingredients(df):
     """
@@ -120,6 +121,12 @@ def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
             aliases[alias] = original
     return aliases
 
+def make_allergies_dict(ALIAS_CSV=ALLERGY_CSV):
+    with open(ALIAS_CSV) as f:
+        lines = f.readlines()
+    lines = [l.split(',') for l in lines[1:]]
+    return {line[0].strip() : [l.strip() for l in line[1:]] for line in lines}
+
 def adjust_banned_foods(banned_foods, dietary_restrictions):
     diet_r_df = pd.read_csv(DIETARY_FILENAME)
     VEGET = "vegetarian"
@@ -129,6 +136,14 @@ def adjust_banned_foods(banned_foods, dietary_restrictions):
         upper_rest = restriction.upper()
         if restriction in dietary_restrictions:
             banned_foods += diet_r_df[upper_rest].dropna().to_list()
+
+    allergy_dict = make_allergies_dict()
+    allergy_bans = []
+    for food in banned_foods:
+        if food in allergy_dict:
+            allergy_bans += allergy_dict[food]
+
+    banned_foods += allergy_bans
     return banned_foods
 
 
