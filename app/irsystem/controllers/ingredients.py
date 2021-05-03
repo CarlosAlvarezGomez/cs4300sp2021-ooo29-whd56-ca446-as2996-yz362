@@ -4,7 +4,7 @@ within the recipe dataset, including
 tokenization and similarity measures.
 
 Author: Liam Daniels
-Date: 19 April 2021
+Date: 3 May 2021
 """
 import pandas as pd
 import numpy as np
@@ -63,6 +63,13 @@ def calc_edit_distance(s1, s2):
 
     return matrix[-1][-1]
 
+def list_contains_ingredient(ingredients, ingredient_query, max_dist=2):
+    for ing in ingredients:
+        if calc_edit_distance(ing, ingredient_query) <= max_dist or \
+            ing in ingredient_query: # "Crabmeat" case
+            return True
+    return False
+
 def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
     """
     Checks whether or not a given recipe has an ingredient that
@@ -93,11 +100,6 @@ def contains_ingredient(recipe_series, ingredient_query, max_dist=2):
     return list_contains_ingredient(ingredients, ingredient_query, max_dist)
 
 
-def list_contains_ingredient(ingredients, ingredient_query, max_dist=2):
-    for ing in ingredients:
-        if calc_edit_distance(ing, ingredient_query) <= max_dist:
-            return True
-    return False
 
 def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
     """
