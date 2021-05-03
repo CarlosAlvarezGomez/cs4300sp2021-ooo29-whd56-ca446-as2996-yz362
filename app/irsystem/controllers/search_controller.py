@@ -62,18 +62,60 @@ def search():
 	dietReq = request.args.get('diet_req')    # get diet requirements
 	description = request.args.get('recipe-description') # get description
 	data = []
+
 	if (not description):
+		output_message = "Please input ingredients or a description to find ecologically friendly recipes! At the mean time, here are some well loved recipes that also save our planet: "
+
+		# set weights
+		ecoW = (float(maxFootprint)/80)*0.4
+		ratingW = 1-ecoW
+
+		# recipes sorted by rating
+		sorted_review_info = agg_review_info.sort_values(['count', 'rating'], ascending=[False, False])
+		rated_recipes = list(sorted_review_info.index)
+		reviewRank = {id:rank for rank,id in enumerate(rated_recipes)}
+
+		finalRank = {}
+		for recipe in recipe_ids:
+			
+			if recipe in ecoRank.keys() and recipe in reviewRank.keys():
+
+				if float(recipes.loc[recipe, 'minutes']) <= float(maxTime): 
+					finalRank[recipe] = ecoW*ecoRank[recipe] + ratingW*reviewRank[recipe]
+		
+		data = []
+		reccomend = sorted(finalRank, key = lambda k:finalRank[k])[:100]
+		reccomend = IG.first_n_filtered(reccomend,allergies,dietReq,9)
+		
 		output = {}
-		#output_message = "Please input ingredients or a description to find ecologically friendly recipes!"
+		rec = {}
+		if len(reccomend)>0:
+			for id in reccomend:
+				rec[id] = {
+					"name":recipes.loc[id,'name'],
+					"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+					"description":recipes.loc[id,'description'],
+					"steps":ast.literal_eval(recipes.loc[id,'steps']),
+					"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
+					"n_reviews":int(agg_review_info.loc[id,'count']),
+					"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+					"degree":'second'
+					}
+		
+		return render_template('results.html', name=project_name, netid=net_id, output_message=output_message, data=rec)
+
 	else:
+		output_message = "Your results: "
+
 		# calculate description ranking
 		descripList = SIM.get_cosine_similarities(description, inverted_index)
 		# descripRankedList = list(descripDF['recipe_id'])
 		# descripRank = {id:rank for rank,id in enumerate(descripRankedList)}
 		descripKeys = descripList.keys()
 		descripRank = {id:rank for rank,id in enumerate(descripKeys)}
+		
 		# set weights
-		ecoW = (float(maxFootprint)/80)*0.2
+		ecoW = (float(maxFootprint)/80)*0.4
 		descripW = 1-ecoW
 
 		# finalRanking
@@ -83,7 +125,7 @@ def search():
 			# just in case we didn't return all recipe ids, check if we have both scores first
 			if recipe in ecoRank.keys() and recipe in descripRank.keys():
 
-				# if the recipe meets time and eco requirements
+				# if the recipe meets time requirements
 				if float(recipes.loc[recipe, 'minutes']) <= float(maxTime): #and float(recipes.loc[recipe,'emission']) <= maxFootprint:
 					finalRank[recipe] = ecoW*ecoRank[recipe] + descripW*descripRank[recipe]
 					# finalRank[recipe] = descripRank[recipe]
@@ -93,30 +135,15 @@ def search():
 
 		# second degree search of recipes users may be interested in based on social information
 		reccomend = []
-		for id in data[:10]:
+		for id in data[:9]:
 			rec = most_sim_recipes[id]
 			if rec not in data:
 				reccomend.append(rec)
 
 
-	output = {}
-	
-	for id in data:
-		output[id] = {
-			"name":recipes.loc[id,'name'],
-			"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
-			"description":recipes.loc[id,'description'],
-			"steps":ast.literal_eval(recipes.loc[id,'steps']),
-			"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
-			"n_reviews":int(agg_review_info.loc[id,'count']),
-			"avg_rating":round(agg_review_info.loc[id,'rating'],2),
-			"degree":'first'
-			}
-
-	rec = {}
-	if len(reccomend)>0:
-		for id in reccomend:
-			rec[id] = {
+		output = {}
+		for id in data:
+			output[id] = {
 				"name":recipes.loc[id,'name'],
 				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
 				"description":recipes.loc[id,'description'],
@@ -124,6 +151,21 @@ def search():
 				"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
 				"n_reviews":int(agg_review_info.loc[id,'count']),
 				"avg_rating":round(agg_review_info.loc[id,'rating'],2),
-				"degree":'second'
+				"degree":'first'
 				}
-	return render_template('results.html', name=project_name, netid=net_id, output_message='Your Results:', data=output, recommendation=rec)
+
+		rec = {}
+		if len(reccomend)>0:
+			for id in reccomend:
+				rec[id] = {
+					"name":recipes.loc[id,'name'],
+					"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
+					"description":recipes.loc[id,'description'],
+					"steps":ast.literal_eval(recipes.loc[id,'steps']),
+					"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
+					"n_reviews":int(agg_review_info.loc[id,'count']),
+					"avg_rating":round(agg_review_info.loc[id,'rating'],2),
+					"degree":'second'
+					}
+
+		return render_template('results.html', name=project_name, netid=net_id, output_message=output_message, data=output, recommendation=rec)
