@@ -67,15 +67,17 @@ h1 {
 /* Popup container */
 .popup {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
     cursor: pointer;
     user-select: none;
+    text-align: center;
+
   }
   
   /* The actual popup (appears on top) */
   .popup .popuptext {
     visibility: hidden;
-    width: 160px;
+    width: 320px;
     background-color: #555;
     color: #fff;
     text-align: center;
@@ -84,7 +86,7 @@ h1 {
     position: absolute;
     z-index: 1;
     bottom: 125%;
-    left: 50%;
+    left: 25%;
     margin-left: -80px;
   }
   
