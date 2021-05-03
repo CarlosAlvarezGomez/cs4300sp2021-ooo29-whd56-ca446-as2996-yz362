@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 
 DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+# For testing:
+#DATASET_DIR = "Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients"
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
@@ -116,6 +118,18 @@ def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
             aliases[alias] = original
     return aliases
 
+def adjust_banned_foods(banned_foods, dietary_restrictions):
+    diet_r_df = pd.read_csv(DIETARY_FILENAME)
+    VEGET = "vegetarian"
+    VEGAN = "vegan"
+    PESCA = "pescatarian"
+    for restriction in [VEGET, VEGAN, PESCA]:
+        upper_rest = restriction.upper()
+        if restriction in dietary_restrictions:
+            banned_foods += diet_r_df[upper_rest].dropna().to_list()
+    return banned_foods
+
+
 def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
                     max_dist=2):
     """
@@ -126,14 +140,7 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     """
     df = tokenize_recipe_ingredients(pd.read_csv(RECIPE_FILE))
 
-    diet_r_df = pd.read_csv(DIETARY_FILENAME)
-    VEGET = "vegetarian"
-    VEGAN = "vegan"
-    PESCA = "pescatarian"
-    for restriction in [VEGET, VEGAN, PESCA]:
-        upper_rest = restriction.upper()
-        if restriction in dietary_restrictions:
-            banned_foods += diet_r_df[upper_rest].dropna()
+    banned_foods = adjust_banned_foods(banned_foods, dietary_restrictions)
 
     def contains_banned_ing(rec_ser):
         if banned_foods is not None:
