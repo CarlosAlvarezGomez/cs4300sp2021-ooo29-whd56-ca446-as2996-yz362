@@ -71,7 +71,7 @@ def search():
 		ratingW = 1-ecoW
 
 		# recipes sorted by rating
-		sorted_review_info = agg_review_info.sort_values(['count', 'rating'], ascending=[False, False])
+		sorted_review_info = agg_review_info.sort_values(['rating'], ascending=[False])
 		rated_recipes = list(sorted_review_info.index)
 		reviewRank = {id:rank for rank,id in enumerate(rated_recipes)}
 
