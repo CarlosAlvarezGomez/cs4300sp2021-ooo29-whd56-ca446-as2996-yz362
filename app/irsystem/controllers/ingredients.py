@@ -142,6 +142,7 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     """
     df = tokenize_recipe_ingredients(pd.read_csv(RECIPE_FILE))
 
+    assert(type(banned_foods) == list)
     banned_foods = adjust_banned_foods(banned_foods, dietary_restrictions)
 
     def contains_banned_ing(rec_ser):
