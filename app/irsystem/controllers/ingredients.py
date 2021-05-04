@@ -9,9 +9,9 @@ Date: 3 May 2021
 import pandas as pd
 import numpy as np
 
-#DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
+DATASET_DIR = "app/irsystem/controllers/Dataset/files/"
 # For testing:
-DATASET_DIR = "Dataset/files/"
+#DATASET_DIR = "Dataset/files/"
 RECIPE_FILE = "{}sampled_recipes.csv".format(DATASET_DIR)
 ING_CATEGORY_NAME = "ingredients"
 RECIPE_CO2_FILENAME = "{}recipes_co2_sorted.csv".format(DATASET_DIR)
@@ -157,6 +157,7 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     """
     df = tokenize_recipe_ingredients(pd.read_csv(RECIPE_FILE))
 
+    assert(type(banned_foods) == list)
     banned_foods = adjust_banned_foods(banned_foods, dietary_restrictions)
 
     def contains_banned_ing(rec_ser):
