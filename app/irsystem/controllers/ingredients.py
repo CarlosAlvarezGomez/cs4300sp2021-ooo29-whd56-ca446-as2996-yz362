@@ -121,6 +121,8 @@ def make_meat_alias_dict(ALIAS_CSV=ALIAS_CSV):
     return aliases
 
 def adjust_banned_foods(banned_foods, dietary_restrictions):
+    assert type(banned_foods) == list
+
     diet_r_df = pd.read_csv(DIETARY_FILENAME)
     VEGET = "vegetarian"
     VEGAN = "vegan"
@@ -132,7 +134,7 @@ def adjust_banned_foods(banned_foods, dietary_restrictions):
     return banned_foods
 
 
-def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
+def first_n_filtered(ranked_ids, banned_foods_s, dietary_restrictions, n,
                     max_dist=2):
     """
     Given a list of recipe ids, outputs a list of the first n
@@ -142,7 +144,8 @@ def first_n_filtered(ranked_ids, banned_foods, dietary_restrictions, n,
     """
     df = tokenize_recipe_ingredients(pd.read_csv(RECIPE_FILE))
 
-    assert(type(banned_foods) == list)
+    banned_foods = [s.strip("[] ',") for s in banned_foods_s.split(" ")]
+    banned_foods = [b for b in banned_foods if b != ""]
     banned_foods = adjust_banned_foods(banned_foods, dietary_restrictions)
 
     def contains_banned_ing(rec_ser):
