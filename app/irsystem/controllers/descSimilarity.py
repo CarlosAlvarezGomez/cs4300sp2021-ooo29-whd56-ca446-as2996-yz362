@@ -8,11 +8,14 @@ import numpy as np
 import math
 from collections import Counter
 import time
+import re
+import string
 
 # Paths
 PATH_TO_RECIPES = 'app/irsystem/controllers/Dataset/files/sampled_recipes.csv'
 PATH_TO_INVERTED_INDEX = 'app/irsystem/controllers/Dataset/files/inverted_index.csv'
 PATH_TO_DOC_NORMS = 'app/irsystem/controllers/Dataset/files/doc_norms.csv'
+PATH_TO_TITLE_NORMS = 'app/irsystem/controllers/Dataset/files/title_norms.csv'
 
 # Number of docs
 N_DOCS = 14794
@@ -20,9 +23,15 @@ N_DOCS = 14794
 # Imports the recipe data
 # doc_dataframe = pd.read_csv(PATH_TO_RECIPES)
 
+with open('app/irsystem/controllers/Dataset/stop_words_english.txt') as f:
+    stopwords = f.readlines()
+stopwords = list(map(lambda x : x.replace('\n', ''), stopwords))
+
+
 # Converts a string into a list of tokens
-def tokenize_string(string):
-  return string.lower().replace('.', '').replace(',', '').split(' ')
+def tokenize_string(s):
+  tokens = re.sub(r"[{}]".format(string.punctuation), "", s).lower().split(' ')
+  return list(filter(lambda x : not(x in stopwords), tokens))
 
 # Filters an inverted index using the so that it only keeps terms that are
 # in the desired range
@@ -66,11 +75,11 @@ def make_inverted_index(recipes_df):
 def save_inverted_index(inverted_index_input, path_to_inverted_index=PATH_TO_INVERTED_INDEX):
   rows = []
   for term, tfs in inverted_index_input.items():
-    string = '['
+    s = '['
     for doc_id, freq in tfs:
-      string += '(' + str(doc_id) + ':' + str(freq) + ') '
+      s += '(' + str(doc_id) + ':' + str(freq) + ') '
 
-    rows.append((term, string[:-1] + ']'))
+    rows.append((term, s[:-1] + ']'))
   
   inverted_index_df = pd.DataFrame(rows, columns = ['term', 'term-frequencies'])
   inverted_index_df.to_csv(path_to_inverted_index)
@@ -83,7 +92,7 @@ def get_inverted_index(path_to_inverted_index=PATH_TO_INVERTED_INDEX):
   terms = inverted_index_df['term']
   term_frequencies = inverted_index_df['term-frequencies']
 
-  string_to_tuple = lambda string: (int(string.split(':')[0]), float(string.split(':')[1]))
+  string_to_tuple = lambda s: (int(s.split(':')[0]), float(s.split(':')[1]))
 
   for term, term_freqs in zip(terms, term_frequencies):
     term_freqs = list(map(lambda x : x.split(')')[0], term_freqs[1:-1].split('(')))
@@ -167,7 +176,23 @@ def get_cosine_similarities(query, inverted_index, n_docs=N_DOCS):
   
   return scores
 
-# doc_dataframe = pd.read_csv('Dataset/files/sampled_recipes.csv',index_col='id')
+# doc_dataframe = pd.read_csv('app/irsystem/controllers/Dataset/files/sampled_recipes.csv',index_col='id')
 # inverted_index = make_inverted_index(doc_dataframe)
 # dn = make_doc_norms(inverted_index)
 # save_doc_norms(dn)
+
+def make_title_inverted_index(recipes_df):
+  recipe_ids = list(recipes_df.index)
+  recipe_titles = list(recipes_df['title'])
+
+  for id, title in zip(recipe_ids, recipe_titles):
+    tokens_list = tokenize_string(title)
+    tokens_counter = Counter(tokens_list)
+
+    for token, freq in tokens_counter.most_common():
+      if token in inverted_index.keys():
+        inverted_index[token] += [(id, freq)]
+      else:
+        inverted_index[token] = [(id, freq)]
+      
+  return filter_inverted_index(inverted_index)
