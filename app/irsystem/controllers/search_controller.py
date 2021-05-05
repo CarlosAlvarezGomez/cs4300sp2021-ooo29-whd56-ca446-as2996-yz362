@@ -50,7 +50,24 @@ with open('app/irsystem/controllers/Dataset/files/most_sim_recipes.pkl', 'rb') a
 @irsystem.route('/')
 def main():
 	output_message = ''
-	data = []
+	data = {}
+	
+	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
+
+@irsystem.route('/backtosearch')
+def s():
+	output_message = ''
+	data = {}
+	desc = session.get('description')
+	allergies = session.get('allergies')
+	time = session.get('maxTime')
+	footprint = session.get('maxFootprint')
+	diet = session.get('dietReq')
+	data['description'] = desc
+	data['allergies'] = allergies
+	data['time'] = time
+	data['footprint'] = footprint
+	data['diet'] = diet
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 @irsystem.route('/search', methods=['GET'])
@@ -61,6 +78,12 @@ def search():
 	allergies = request.args.get('allergies') # get list of allergies
 	dietReq = request.args.get('diet_req')    # get diet requirements
 	description = request.args.get('recipe-description') # get description
+	session['description'] = description
+	session['allergies'] = allergies
+	session['maxTime'] = maxTime
+	session['maxFootprint'] = maxFootprint
+	session['dietReq'] = dietReq
+
 	data = []
 
 	if (not description):

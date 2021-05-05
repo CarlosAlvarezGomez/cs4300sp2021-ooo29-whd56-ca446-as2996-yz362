@@ -7,6 +7,14 @@
   <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
   <title>Your Results - Sustainable Sustenence</title>
 </head>
+<body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px; background-size:auto; background-position: top; background-repeat:repeat;">
+    <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small; color: white;">
+        <p>Project Name: Sustainable Sustenence</p>
+        <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
+    </div>
+    <br><br>
+    <a style="text-align: left; color: white; font-family: Futura;" href="/backtosearch"> Back to search </a>
+    <h1 style="text-align: center; color: white; font-family: Futura;">{{output_message}}</h1>
 
 <script style="display: none;">
   // When the user clicks on <div>, open the popup
@@ -16,34 +24,16 @@
   }
 </script>
 
-<body
-  style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px; background-size:auto; background-position: top; background-repeat:repeat;">
-  <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small; color: white;">
-    <p>Project Name: Sustainable Sustenence</p>
-    <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
-  </div>
-  <br><br>
-  <h1 style="text-align: center; color: white; font-family: Futura;">{{output_message}}</h1>
   <div class="popup" onclick="myFunction()"
-    style="text-align: center; font-size: small; font-family: Futura; color:white; ">
+    style="display: flex;
+    align-items: center;
+    justify-content: center;text-align: center; font-size: small; font-family: Futura; color:white; ">
     What does the ecological rating mean? Click here to find out.
-    <!-- <span class="popuptext" id="myPopup" style="padding: 10px; ">This ecological factor score is determined by the carbon footprint of
-        the recipes we choose for you. Recipes with a ecological factor higher than the value you choose will
-        not be included in the recipes we choose for you.</span> -->
     <span class="popuptext" id="myPopup" style="padding: 10px; text-align: center; ">
       An emission score of:
-      <p>>5 = driving 10+ miles </p>
-      <p>>1 = driving 2+ miles </p>
-      <p>0.5> = straight from your garden</p>
-
-      <!-- <ul style="list-style-type: disc;">
-        An emission score of:
-        <li>5 or more = a car driving 10+ miles</li>
-        <li>2.2 or more = a car driving 5+ miles</li>
-        <li>1 or more = a car driving 2+ miles</li>
-        <li>0.5 or more = driving down the street</li>
-        <li>0.5 or less = picking ingredients straight from your garden</li>
-      </ul> -->
+      <p>> 5 = driving 10+ miles </p>
+      <p>> 1 = driving 2+ miles </p>
+      <p>0.5 > = straight from your garden</p>
     </span>
   </div>
   <form id="recipeData" class="form-inline global-search"
