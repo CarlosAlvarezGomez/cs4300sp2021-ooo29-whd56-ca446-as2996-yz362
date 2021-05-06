@@ -10,6 +10,7 @@ import os
 import ast
 from . import descSimilarity as SIM # IMPORT SIMILARITY FUNCTION
 from . import ingredients as IG # IMPORT INGREDIENTS FUNCTION
+from . import capitalizer as C # IMPORT CAPITILIZING FUNCTION
 import numpy as np
 import pickle5 as pickle
 
@@ -167,9 +168,9 @@ def search():
 		output = {}
 		for id in data:
 			output[id] = {
-				"name":recipes.loc[id,'name'],
+				"name": C.capitalizer(recipes.loc[id,'name'], 'title'),
 				"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
-				"description":recipes.loc[id,'description'],
+				"description": C.capitalizer(recipes.loc[id,'description'], 'description'),
 				"steps":ast.literal_eval(recipes.loc[id,'steps']),
 				"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
 				"n_reviews":int(agg_review_info.loc[id,'count']),
@@ -181,9 +182,9 @@ def search():
 		if len(reccomend)>0:
 			for id in reccomend:
 				rec[id] = {
-					"name":recipes.loc[id,'name'],
+					"name": C.capitalizer(recipes.loc[id,'name'], 'title'),
 					"ingredients": ast.literal_eval(recipes.loc[id,'ingredients']),
-					"description":recipes.loc[id,'description'],
+					"description": C.capitalizer(recipes.loc[id,'description'], 'description'),
 					"steps":ast.literal_eval(recipes.loc[id,'steps']),
 					"emission":round(float(ecoDF[ecoDF['id']==id]['CO2']), 2),
 					"n_reviews":int(agg_review_info.loc[id,'count']),
