@@ -87,7 +87,7 @@ def search():
 	data = []
 
 	if (not description):
-		output_message = "Please input ingredients or a description to find ecologically friendly recipes! At the mean time, here are some well loved recipes that also save our planet: "
+		output_message = "Please input ingredients or a description to find ecologically friendly recipes! In the meantime, here are some well-loved recipes that also save our planet: "
 
 		# set weights
 		ecoW = (float(maxFootprint)/80)*0.4

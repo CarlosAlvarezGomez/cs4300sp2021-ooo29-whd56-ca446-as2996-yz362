@@ -9,8 +9,11 @@
 </head>
 <body style="background-color:darkgray; font-family: 'Roboto', sans-serif; padding: 15px; background-size:auto; background-position: top; background-repeat:repeat;">
     <div class="topcorner" style="font-family: 'Courier New', Courier, monospace; font-size: x-small; color: white;">
-        <p>Project Name: Sustainable Sustenence</p>
-        <p>Student Name: Aashna, Wemi, Yifei, Carlos and Liam</p>
+        <p>Project Name: Sustainable Sustenance</p>
+        <p>Student Names: Aashna Saxena, Wemi Oshun-Williams, Yifei Zheng, Carlos Alvarez and Liam Daniels</p>
+        <a style="color:white;" href="https://sustainable-sustenance.herokuapp.com/">First Prototype</a>
+        <a style="color:white" href="https://sustainable-sustenance-v2.herokuapp.com/">Second Prototype</a>
+        <a style="color:white" href="https://sustainable-sustenance-v3.herokuapp.com/">Final Prototype</a>
     </div>
     <br><br>
     <a style="text-align: left; color: white; font-family: Futura;" href="/backtosearch"> Back to search </a>
@@ -140,6 +143,7 @@
     </div>
     </div>
     {% endfor %}
+    {% if recommendation %}
     <h1 style="margin: 10px; text-align: center; color: white; font-family: Futura;">Looking for more? Here are some
       recommendations based on the top results of your search!</h1>
     {% for r in recommendation %}
@@ -153,7 +157,7 @@
           </div>
           <div style="margin-left:5px; margin-top:15px;">
             Emission:
-            {{recommendation[r]['emission']}}
+            {{recommendation[r]['emission']}} CO2e
           </div>
           <div style="margin-left:5px; margin-top:15px;">
             Average Rating:
@@ -182,6 +186,7 @@
     </div>
     </div>
     {% endfor %}
+    {% endif %}
     {% endif %}
   </form>
 </body>
