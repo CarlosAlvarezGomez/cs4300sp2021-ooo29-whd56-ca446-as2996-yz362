@@ -34,21 +34,21 @@
         action="/search" 
         method="GET"
     >
-        <h1 style="font-size: 40px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
+        <div style="font-size: 40px;  font-family:'Courier New', Courier, monospace; color: #053805; font-weight: bold;">
             SUSTAINABLE SUSTENANCE
-        </h1>
+        </div>
         <!-- TEXTBOXES -->
-        <h1 style="font-size: 15px; font-family: Futura; color: #000000; margin: 15px;">
+        <div style="font-size: 15px; font-family: Futura; color: #000000; margin: 15px;">
             What are you in the mood for?
-        </h1>
+        </div>
         <div class="form-group">
             <input id="recipe-description" type="text" name="recipe-description" class="form-control"
                 placeholder="Easy, simple autumnal dish" value="{{data['description']}}">
                 
         </div>
-        <h1 style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
+        <div style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
             Any allergies?
-        </h1>
+        </div>
         <div class="form-group">
             <input id="allergies" type="text" name="allergies" class="form-control"
                 placeholder="Peanuts, gluten, cashews, ..." value="{{data['allergies']}}">
@@ -130,14 +130,14 @@
         </script>
 
         <!-- SLIDERS -->
-        <h1 style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
+        <div style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
             How much time do you want to spend cooking?
-        </h1>
+        </div>
         <div style="width:50%; font-family: Futura;" class="slidecontainer">
             <input id="timeSlide" name="timeSlide" type="range" min="1" max="120" value="{{data['time']}}" class="slider">
             <span style="margin: 10px; text-align: center;" id="time"></span>
         </div>
-        <h1 style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
+        <div style="margin: 15px; font-size: 15px; font-family: Futura; color: #000000">
             How much do you value the ecological factor of the food you're making?
             <div class="popup" onclick="myFunction()" style="text-align:center;font-size: small; font-family: Futura; color: #000000; margin: 5px;">
                 Click here for more information.
@@ -145,7 +145,7 @@
                     determines how much you value the importance of the ecological footprint of the recipes we suggest for
                     you.</span>
             </div>
-        </h1>
+        </div>
         
         <div style="width:60%; display: flex; font-family: Futura; align-items: center; justify-content: center; flex-direction: row;" class="slidecontainer">
             <span style="margin: 10px;" >Not so important</span>
@@ -179,7 +179,7 @@
             }
         </script>
 
-        <h1 style="font-size: 15px; font-family: Futura; color: #000000;">Dietary Restrictions?</label>
+        <div style="font-size: 15px; font-family: Futura; color: #000000;">Dietary Restrictions?</label>
         <select name="diet_req" style="
         margin: 15px;
         font-family: Futura;
